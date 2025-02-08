@@ -130,6 +130,31 @@ export default function TodoForm() {
                       validate: {
                         notPast: (value) =>
                           value >= today || "You cannot select a past date",
+                        validDate: (value) =>
+                          moment(value, "YYYY-MM-DD", true).isValid() ||
+                          "Please enter a valid date", // Ensure date is valid and in correct format
+                        validDay: (value) => {
+                          const day = parseInt(value.slice(8, 10), 10);
+                          return (
+                            (day >= 1 && day <= 31) ||
+                            "Day should be between 1 and 31"
+                          );
+                        },
+                        validMonth: (value) => {
+                          const month = parseInt(value.slice(5, 7), 10);
+                          return (
+                            (month >= 1 && month <= 12) ||
+                            "Month should be between 1 and 12"
+                          );
+                        },
+                        validYear: (value) => {
+                          const year = parseInt(value.slice(0, 4), 10);
+                          return (
+                            (year >= 2015 &&
+                              year <= new Date().getFullYear()) ||
+                            "Year should be between 2015 and the current year"
+                          );
+                        },
                       },
                     })}
                     className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out appearance-none bg-white text-gray-700 text-sm leading-tight hover:border-indigo-500 active:border-indigo-500 touch-manipulation"

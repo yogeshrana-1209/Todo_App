@@ -4,8 +4,6 @@ import {
   setSelectedTodo,
   deleteForm,
   fetchTodos,
-  getTodoError,
-  
 } from "../store/todoSlice";
 import moment from "moment";
 import { useState, useEffect } from "react";
@@ -13,7 +11,6 @@ import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your Co
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
-  const error = useSelector(getTodoError);
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +52,7 @@ export default function TodoList() {
             Todo List
           </h1>
         </div>
-        {error && <p>{error}</p>}
+        {/* {error && <p>{error}</p>} */}
 
         {/* Empty State */}
         {todos && todos.length === 0 ? (

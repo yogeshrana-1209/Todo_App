@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SuccessNotify,DangerNotify } from "../../sharedComponent/notification";
+import {
+  SuccessNotify,
+  DangerNotify,
+} from "../../sharedComponent/notification";
 import axiosInstance from "../../services/api/utils/axiosConfig";
-// import moment from 'moment';
 
 const initialState = {
   todos: [],
   selectedTodo: null,
-  // loading: false,
-  error: null,
 };
 
 // Fetch todos from the server
@@ -17,7 +17,7 @@ export const fetchTodos = () => async (dispatch) => {
     dispatch(setTodos(response.data));
   } catch (error) {
     console.error(error);
-    dispatch(setError("Failed to fetch todos"));
+    DangerNotify("Failed to fetch todos");
   }
 };
 
@@ -32,11 +32,10 @@ export const submitForm = (newTodo) => async (dispatch) => {
   try {
     const response = await axiosInstance.post("/todos", newTodo);
     dispatch(addTodo(response.data));
-    // SuccessNotify("Item Added Successfully");
-    DangerNotify("ITem added");
+    SuccessNotify("Item Added Successfully");
   } catch (error) {
     console.error(error);
-    dispatch(setError("Failed to add todo"));
+    DangerNotify("Failed to add todo");
   }
 };
 
@@ -57,7 +56,7 @@ export const updateForm = (todo) => async (dispatch) => {
     return true;
   } catch (error) {
     console.error(error);
-    dispatch(setError("Failed to update todo"));
+    DangerNotify("Failed to update todo");
     return false;
   }
 };
@@ -75,7 +74,7 @@ export const deleteForm = (id) => async (dispatch) => {
     SuccessNotify("Item Deleted Successfully");
   } catch (error) {
     console.error(error);
-    dispatch(setError("Failed to delete todo"));
+    DangerNotify("Failed to delete todo");
   }
 };
 
@@ -112,19 +111,9 @@ const todoSlice = createSlice({
     setSelectedTodo: (state, action) => {
       state.selectedTodo = action.payload;
     },
-
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
   },
 });
 
-export const {
-  addTodo,
-  updateTodo,
-  setSelectedTodo,
-  deleteTodo,
-  setError,
-  setTodos,
-} = todoSlice.actions;
+export const { addTodo, updateTodo, setSelectedTodo, deleteTodo, setTodos } =
+  todoSlice.actions;
 export default todoSlice.reducer;
