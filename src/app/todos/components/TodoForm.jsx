@@ -35,21 +35,20 @@ export default function TodoForm() {
       setValue("status", selectedTodo.status || "");
       trigger();
     } else {
-      setValue("date",today);
+      setValue("date", today);
       reset();
     }
-  }, [selectedTodo, setValue, reset, trigger,today]);
+  }, [selectedTodo, setValue, reset, trigger, today]);
 
   const onSubmit = (data) => {
     if (selectedTodo) {
       const updatedTodo = { ...selectedTodo, ...data };
       dispatch(updateForm(updatedTodo)).then((response) => {
-        console.log("updated",response);
+        console.log("updated", response);
         if (response) {
           reset();
         }
-        
-      }) // Update the Form Method
+      }); // Update the Form Method
       // window.scrollTo({
       //   top: document.documentElement.scrollHeight,
       //   behavior: "smooth", // Optional: for smooth scrolling
@@ -126,12 +125,12 @@ export default function TodoForm() {
                 <div className="relative">
                   <input
                     type="date"
-                    {...register("date", { 
-                      required: "Date is required" ,
-                      validate : {
-                        notPast: (value) => 
+                    {...register("date", {
+                      required: "Date is required",
+                      validate: {
+                        notPast: (value) =>
                           value >= today || "You cannot select a past date",
-                       },
+                      },
                     })}
                     className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out appearance-none bg-white text-gray-700 text-sm leading-tight hover:border-indigo-500 active:border-indigo-500 touch-manipulation"
                   />

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-console.log(`API URL: ${import.meta.env.VITE_API_URL}`);
+// console.log(`API URL: ${import.meta.env.VITE_API_URL}`);
 
 // Use the VITE_API_URL from the environment variables
 const axiosInstance = axios.create({
