@@ -35,6 +35,11 @@ function App() {
     <div>
       <Router>
         <Routes>
+        <Route
+            path="/"
+            element={<Login setIsLoggedIn={setIsLoggedIn} />}
+          />
+
           {/* Public Routes */}
           <Route
             path="/login"

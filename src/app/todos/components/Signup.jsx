@@ -1,18 +1,18 @@
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types"; // Import PropTypes
 
 const Signup = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSignup = () => {
     const userData = { email, password };
     localStorage.setItem("user", JSON.stringify(userData));
     setIsLoggedIn(true);
     localStorage.setItem("isLoggedIn", "true");
-    // navigate("/todo-list");
+    navigate("/todo-list");
   };
 
   return (
@@ -61,7 +61,7 @@ const Signup = ({ setIsLoggedIn }) => {
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-600">Already have an account? </span>
           <button
-            // onClick={() => navigate("/login")}
+            onClick={() => navigate("/login")}
             className="text-sm text-blue-600 hover:underline"
           >
             Login here
