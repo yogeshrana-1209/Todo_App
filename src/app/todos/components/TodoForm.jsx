@@ -98,11 +98,11 @@ export default function TodoForm() {
         }
       });
     } else {
-      const newTodo = {
+      const requestedData = {
         id: Date.now(),
         ...data,
       };
-      dispatch(submitForm(newTodo));
+      dispatch(submitForm(requestedData));
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth", // Optional: for smooth scrolling

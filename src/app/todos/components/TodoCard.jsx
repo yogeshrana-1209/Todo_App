@@ -18,7 +18,7 @@ const TodoCard = ({ todo, onEdit, onDelete }) => {
         </div>
 
         {/* Date, Priority, and Status Section */}
-        <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+        <div className="flex flex-wrap pb-20 gap-4 text-sm text-gray-600">
           <span className="inline-flex items-center bg-gray-100 px-3 py-1 rounded-full">
             <span className="mr-2">📅</span>
             {moment(todo.date).format("DD/MM/YYYY")}
@@ -26,13 +26,12 @@ const TodoCard = ({ todo, onEdit, onDelete }) => {
           <span className="inline-flex items-center bg-gray-100 px-3 py-1 rounded-full">
             <span className="mr-2">🎯</span>
             <span
-              className={`font-medium ${
-                todo.priority === "high"
-                  ? "text-red-600"
-                  : todo.priority === "medium"
-                  ? "text-yellow-600"
-                  : "text-green-600"
-              }`}
+              className={`font-medium ${todo.priority === "high"
+                ? "text-red-600"
+                : todo.priority === "medium"
+                ? "text-yellow-600"
+                : "text-green-600"
+                }`}
             >
               {todo.priority} Priority
             </span>
@@ -42,7 +41,7 @@ const TodoCard = ({ todo, onEdit, onDelete }) => {
       </div>
 
       {/* Action Buttons Section (Aligned in a row) */}
-      <div className="absolute bottom-4 right-4 flex flex-row gap-4">
+      <div className="absolute bottom-4 right-4 flex flex-wrap gap-4">
         <button
           onClick={() => onEdit(todo)}
           className="inline-flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 font-medium text-sm py-2 px-4 rounded-lg border border-blue-600 transition-all duration-300"

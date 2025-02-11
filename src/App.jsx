@@ -1,32 +1,76 @@
-import { ToastContainer } from "react-toastify";
-import "./App.css";
-import { Todos } from "./App/todos/todos";
-// import Footer from "./App/sharedComponent/footer";
+import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import PropTypes from "prop-types"; // Import prop-types
+import Login from "./app/todos/components/Login";
+import Signup from "./app/todos/components/Signup";
+import TodoForm from "./app/todos/components/TodoForm";
+import TodoList from "./app/todos/components/TodoList";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check login status from localStorage
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const ProtectedRoute = ({ children }) => {
+    return isLoggedIn ? children : <Navigate to="/login" />;
+  };
+
+  // Add PropType validation for the children prop
+  ProtectedRoute.propTypes = {
+    children: PropTypes.node.isRequired, // Ensure children is a valid React node
+  };
+
   return (
-    <>
-      <ToastContainer />
+    <div>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route
+            path="/login"
+            element={<Login setIsLoggedIn={setIsLoggedIn} />}
+          />
+          <Route
+            path="/signup"
+            element={<Signup setIsLoggedIn={setIsLoggedIn} />}
+          />
 
-      <h1 className="text-4xl font-extrabold text-blue-600 mb-5 border-2 border-blue-600 rounded-2xl bg-blue-100 p-4">
-          Todo App
-        </h1>
+          {/* Protected Routes */}
+          <Route
+            path="/todo-list"
+            element={
+              <ProtectedRoute>
+                <TodoList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/todo-form"
+            element={
+              <ProtectedRoute>
+                <TodoForm />
+              </ProtectedRoute>
+            }
+          />
 
-      <Todos />
-      <hr />
-
-      {/* <Footer
-        name="Yogesh Rana"
-        link="https://yogeshrana.netlify.app/"
-        title="Full Stack Developer"
-      /> */}
-      {/* <div className="text-red-500 mt-3">
-        <marquee direction="left">
-          NOTE : This Todo App includes the React with Redux Toolkit, Axios Library without
-          any Localstorage Concept...
-        </marquee>
-      </div> */}
-    </>
+          {/* Redirect to login if accessing root without logging in */}
+          <Route
+            path="/"
+            element={<Navigate to={isLoggedIn ? "/todo-list" : "/login"} />}
+          />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
