@@ -4,7 +4,7 @@ import {
   setSelectedTodo,
   deleteForm,
   fetchTodos,
-} from "../store/todoSlice";
+} from "../store/TodoSlice";
 import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
 import TodoCard from "./TodoCard"; // Import the TodoCard component

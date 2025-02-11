@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedTodo, submitForm, updateForm } from "../store/todoSlice";
+import { getSelectedTodo, submitForm, updateForm } from "../store/TodoSlice";
 import { useEffect } from "react";
 import moment from "moment";
 import * as Yup from "yup"; // Import Yup
@@ -10,26 +10,25 @@ export default function TodoForm() {
   const dispatch = useDispatch();
   const selectedTodo = useSelector(getSelectedTodo);
 
-  // Yup validation schema
+  // Updated validationSchema
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required("Name is required")
       .trim() // This removes any extra spaces around the name
-      .min(5, "Name must be at least 5 characters")
+      .min(2, "Name must be at least 2 characters")
       .matches(/^(?!\s*$).+/, "Name cannot be empty or spaces")
       .matches(
-        /^[A-Za-z ]*$/,
-        "Name cannot contain special characters or numbers"
+        /^[A-Za-z]+( [A-Za-z]+)*$/, // Regex that allows no consecutive spaces
+        "Name cannot contain special characters, numbers, or consecutive spaces"
       ),
-
     description: Yup.string()
       .required("Description is required")
       .trim() // This removes any extra spaces around the description
       .matches(/^(?!\s*$).+/, "Description cannot be empty or spaces")
       .matches(
-        /^[A-Za-z ]*$/,
-        "Description cannot contain special characters or numbers"
-      ), // Ensure description doesn't contain special characters or numbers
+        /^[A-Za-z]+( [A-Za-z]+)*$/, // Regex that allows no consecutive spaces
+        "Name cannot contain special characters, numbers, or consecutive spaces"
+      ),
 
     date: Yup.date()
       .required("Date is required")
@@ -208,7 +207,7 @@ export default function TodoForm() {
               </label>
               <select
                 {...register("status")}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700"
+                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700"
               >
                 <option
                   value=""
