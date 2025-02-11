@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "./App.css";
 import { Todos } from "./App/todos/todos";
-import Footer from "./App/sharedComponent/footer";
+// import Footer from "./App/sharedComponent/footer";
 
 function App() {
   return (
@@ -15,17 +15,17 @@ function App() {
       <Todos />
       <hr />
 
-      <Footer
+      {/* <Footer
         name="Yogesh Rana"
         link="https://yogeshrana.netlify.app/"
         title="Full Stack Developer"
-      />
-      <div className="text-red-500 mt-3">
+      /> */}
+      {/* <div className="text-red-500 mt-3">
         <marquee direction="left">
           NOTE : This Todo App includes the React with Redux Toolkit, Axios Library without
           any Localstorage Concept...
         </marquee>
-      </div>
+      </div> */}
     </>
   );
 }

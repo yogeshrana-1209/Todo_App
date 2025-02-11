@@ -48,7 +48,8 @@ export default function TodoForm() {
         if (response) {
           reset();
         }
-      }); // Update the Form Method
+      });
+      // Update the Form Method
       // window.scrollTo({
       //   top: document.documentElement.scrollHeight,
       //   behavior: "smooth", // Optional: for smooth scrolling
@@ -129,7 +130,8 @@ export default function TodoForm() {
                       required: "Date is required",
                       validate: {
                         notPast: (value) =>
-                          value >= today || "You cannot select a past date",
+                          value >= today ||
+                          "You cannot select a past date as due date",
                         validDate: (value) =>
                           moment(value, "YYYY-MM-DD", true).isValid() ||
                           "Please enter a valid date", // Ensure date is valid and in correct format
@@ -148,11 +150,13 @@ export default function TodoForm() {
                           );
                         },
                         validYear: (value) => {
-                          const year = parseInt(value.slice(0, 4), 10);
+                          const year = parseInt(value.slice(0, 4), 10); // Extract the year from the value and convert it to an integer
+                          const currentYear = new Date().getFullYear(); // Get the current year
+
                           return (
-                            (year >= 2015 &&
+                            (year >= currentYear &&
                               year <= new Date().getFullYear()) ||
-                            "Year should be between 2015 and the current year"
+                            "Year should not be in the past and should be between current year or next year"
                           );
                         },
                       },
@@ -255,12 +259,14 @@ export default function TodoForm() {
                 <span className="ml-2 text-gray-700 text-sm">
                   I agree to the terms
                 </span>
-                {errors.agreed && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.agreed.message}
-                  </p>
-                )}
               </div>
+              {errors.agreed && (
+                <p className="text-red-500 text-sm mt-1 block">
+                  {" "}
+                  {/* Add `block` to display below the checkbox */}
+                  {errors.agreed.message}
+                </p>
+              )}
 
               <button
                 type="submit"

@@ -22,7 +22,7 @@
       "id": "1739001489255",
       "name": "Vipul",
       "description": "demo",
-      "date": "2025-02-10",
+      "date": "2025-02-12",
       "priority": "high",
       "status": "Done",
       "agreed": true
@@ -60,15 +60,6 @@
       "description": "sdghsd",
       "date": "2025-02-12",
       "priority": "high",
-      "status": "Done",
-      "agreed": true
-    },
-    {
-      "id": 1739021653149,
-      "name": "fasf",
-      "description": "f",
-      "date": "2025-02-11",
-      "priority": "low",
       "status": "Done",
       "agreed": true
     }
