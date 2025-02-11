@@ -10,19 +10,47 @@ export default function TodoForm() {
   const dispatch = useDispatch();
   const selectedTodo = useSelector(getSelectedTodo);
 
-  // Define Yup validation schema
+  // Yup validation schema
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required("Name is required")
-      .min(2, "Name must be at least 2 characters"),
-    description: Yup.string().required("Description is required"),
+      .trim() // This removes any extra spaces around the name
+      .min(5, "Name must be at least 5 characters")
+      .matches(/^(?!\s*$).+/, "Name cannot be empty or spaces")
+      .matches(
+        /^[A-Za-z ]*$/,
+        "Name cannot contain special characters or numbers"
+      ),
+
+    description: Yup.string()
+      .required("Description is required")
+      .trim() // This removes any extra spaces around the description
+      .matches(/^(?!\s*$).+/, "Description cannot be empty or spaces")
+      .matches(
+        /^[A-Za-z ]*$/,
+        "Description cannot contain special characters or numbers"
+      ), // Ensure description doesn't contain special characters or numbers
+
     date: Yup.date()
       .required("Date is required")
-      .min(moment().format("YYYY-MM-DD"), "You cannot select a past date as due date")
-      .max(moment().add(1, "year").format("YYYY-MM-DD"), "Date must be within a year from today")
+      .min(
+        moment().format("YYYY-MM-DD"),
+        "You cannot select a past date as due date"
+      )
+      .max(
+        moment().add(1, "year").format("YYYY-MM-DD"),
+        "Date must be within a year from today"
+      )
       .typeError("Please enter a valid date"),
-    priority: Yup.string().required("Please select priority"),
-    status: Yup.string().required("Please select a status"),
+
+    priority: Yup.string()
+      .required("Please select priority")
+      .notOneOf(["", " "], "Priority cannot be empty or just spaces"), // Check for empty or space-only selections
+
+    status: Yup.string()
+      .required("Please select a status")
+      .notOneOf(["", " "], "Please select a status"), // Check for empty or space-only selections
+
     agreed: Yup.bool().oneOf([true], "You must agree to proceed"),
   });
 
@@ -35,6 +63,7 @@ export default function TodoForm() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema), // Use Yup validation schema
+    mode: "onChange", // Trigger validation on each change
   });
 
   // Get today's date formatted as 'YYYY-MM-DD'
@@ -102,7 +131,9 @@ export default function TodoForm() {
                 placeholder="Enter task name"
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -116,7 +147,9 @@ export default function TodoForm() {
                 placeholder="Enter task description"
               />
               {errors.description && (
-                <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.description.message}
+                </p>
               )}
             </div>
 
@@ -128,16 +161,20 @@ export default function TodoForm() {
                 <input
                   type="date"
                   {...register("date")}
-                  className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out appearance-none bg-white text-gray-700 text-sm leading-tight hover:border-indigo-500 active:border-indigo-500 touch-manipulation"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out appearance-none bg-white text-gray-700 text-sm leading-tight hover:border-indigo-500 active:border-indigo-500 touch-manipulation"
                 />
                 {errors.date && (
-                  <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.date.message}
+                  </p>
                 )}
               </div>
             </div>
 
             <div>
-              <p className="text-gray-700 text-sm font-semibold mb-2">Priority</p>
+              <p className="text-gray-700 text-sm font-semibold mb-2">
+                Priority
+              </p>
               <div className="flex gap-6">
                 <label className="flex items-center">
                   <input
@@ -159,7 +196,9 @@ export default function TodoForm() {
                 </label>
               </div>
               {errors.priority && (
-                <p className="text-red-500 text-sm mt-1">{errors.priority.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.priority.message}
+                </p>
               )}
             </div>
 
@@ -169,27 +208,52 @@ export default function TodoForm() {
               </label>
               <select
                 {...register("status")}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700"
               >
-                <option value="">Select a Option</option>
-                <option value="Done">Done</option>
-                <option value="Pending">Pending</option>
+                <option
+                  value=""
+                  className="py-2 px-4 text-gray-600 bg-white hover:bg-gray-100"
+                >
+                  Select an Option
+                </option>
+                <option
+                  value="Done"
+                  className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
+                >
+                  Done
+                </option>
+                <option
+                  value="Pending"
+                  className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
+                >
+                  Pending
+                </option>
               </select>
               {errors.status && (
-                <p className="text-red-500 text-sm mt-1">{errors.status.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.status.message}
+                </p>
               )}
             </div>
 
             <div className="flex items-center">
               <input
+                id="agree"
                 type="checkbox"
                 {...register("agreed")}
                 className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
               />
-              <span className="ml-2 text-gray-700 text-sm">I agree to the terms</span>
+              <label
+                htmlFor="agree"
+                className="ml-2 text-gray-700 text-sm cursor-pointer"
+              >
+                I agree to the terms
+              </label>
             </div>
             {errors.agreed && (
-              <p className="text-red-500 text-sm mt-1">{errors.agreed.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.agreed.message}
+              </p>
             )}
 
             <button
