@@ -12,12 +12,12 @@ const axiosInstance = axios.create({
 
 //GET request function
 export const getRequest = () => {
-  return axiosInstance.get('todos');
+  return axiosInstance.get('/todos');
 };
 
 //POST request function
 export const postRequest = (requestedData) => {
-  return axiosInstance.post('/todos', requestedData );
+  return axiosInstance.post("/todos", requestedData );
 }
 
 //PUT request function

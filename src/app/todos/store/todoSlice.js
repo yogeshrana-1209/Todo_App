@@ -3,17 +3,23 @@ import {
   SuccessNotify,
   DangerNotify,
 } from "../../sharedComponent/notification";
-import { getRequest,putRequest,postRequest,deleteRequest } from "../../services/api/utils/axiosConfig";
+import {
+  getRequest,
+  putRequest,
+  postRequest,
+  deleteRequest,
+} from "../../services/api/utils/axiosConfig";
 
 const initialState = {
   todos: [],
   selectedTodo: null,
+  isLoggedIn: localStorage.getItem("isLoggedIn") === "true" || false, // Get initial login status from localStorage
 };
 
 // Fetch todos from the server
 export const fetchTodos = () => async (dispatch) => {
   try {
-    const response = await getRequest("/todos");
+    const response = await getRequest();
     dispatch(setTodos(response.data));
   } catch (error) {
     console.error(error);
@@ -30,7 +36,7 @@ export const fetchTodos = () => async (dispatch) => {
 // Add a new todo to the server
 export const submitForm = (requestedData) => async (dispatch) => {
   try {
-    const response = await postRequest("/todos", requestedData);
+    const response = await postRequest(requestedData);
     dispatch(addTodo(response.data));
     SuccessNotify("Item Added Successfully");
   } catch (error) {
@@ -94,6 +100,15 @@ const todoSlice = createSlice({
       state.todos.push(action.payload);
     },
 
+    login: (state) => {
+      state.isLoggedIn = true;
+      localStorage.setItem("isLoggedIn", "true");
+    },
+    logout: (state) => {
+      state.isLoggedIn = false;
+      localStorage.setItem("isLoggedIn", "false");
+    },
+
     updateTodo: (state, action) => {
       const index = state.todos.findIndex(
         (todo) => todo.id === action.payload.id
@@ -114,6 +129,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addTodo, updateTodo, setSelectedTodo, deleteTodo, setTodos } =
+export const { addTodo, updateTodo, login, logout, setSelectedTodo, deleteTodo, setTodos } =
   todoSlice.actions;
 export default todoSlice.reducer;

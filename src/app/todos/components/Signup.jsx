@@ -5,11 +5,16 @@ import * as Yup from "yup"; // Import Yup for validation
 
 // Yup validation schema
 const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
+  username: Yup.string()
+    .matches(/^[A-Za-z]+$/, "Username cannot contain numbers or special characters") // Ensures only letters are allowed
+    .matches(/^\S*$/, "Username cannot contain spaces") // Ensures no spaces in the username
+    .required("Username is required"),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .matches(/^\S*$/, "Password cannot contain spaces") // Ensures no spaces in the password
+    .min(3, "Password must be at least 3 characters long") // Ensures password is at least 6 characters
     .required("Password is required"),
 });
+
 
 const Signup = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -25,11 +30,23 @@ const Signup = ({ setIsLoggedIn }) => {
     validationSchema
       .validate(formData, { abortEarly: false })
       .then(() => {
-        // If validation passes, store the user data and navigate
-        const userData = { username, password };
-        localStorage.setItem("user", JSON.stringify(userData));
+        // If validation passes, store the user data in an array in localStorage
+        const newUser = { username, password };
+
+        // Get the current list of users from localStorage (or initialize an empty array if none exist)
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+
+        // Add the new user to the list of users
+        users.push(newUser);
+
+        // Store the updated list of users back in localStorage
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // Set the user as logged in
         setIsLoggedIn(true);
         localStorage.setItem("isLoggedIn", "true");
+
+        // Navigate to the login page
         navigate("/login");
       })
       .catch((err) => {
@@ -101,7 +118,7 @@ const Signup = ({ setIsLoggedIn }) => {
               onChange={handleUsernameChange} // onChange event added
             />
             {errors.username && (
-              <div className="text-red-500 text-xs mt-1">{errors.username}</div>
+              <div className="text-red-500 text-sm mt-1">{errors.username}</div>
             )}
           </div>
 
@@ -122,7 +139,7 @@ const Signup = ({ setIsLoggedIn }) => {
               onChange={handlePasswordChange} // onChange event added
             />
             {errors.password && (
-              <div className="text-red-500 text-xs mt-1">{errors.password}</div>
+              <div className="text-red-500 text-sm mt-1">{errors.password}</div>
             )}
           </div>
 

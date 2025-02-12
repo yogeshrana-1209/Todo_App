@@ -4,19 +4,24 @@ import {
   setSelectedTodo,
   deleteForm,
   fetchTodos,
+  login,
+  logout
 } from "../store/TodoSlice";
 import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
 import TodoCard from "./TodoCard"; // Import the TodoCard component
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize navigate
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
 
   const handleEdit = (todo) => {
+    navigate('/todo-form');
     dispatch(setSelectedTodo(todo));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -38,9 +43,23 @@ export default function TodoList() {
     }
   };
 
+  const handleLogout = () => {
+    // localStorage.setItem("isLoggedIn", "false");
+    dispatch(logout());
+    navigate("/login"); // Redirect to the login page after logout
+  };
+
+  const handleLogin = () => {
+    dispatch(login());
+    navigate("/todo-list"); // Redirect to login page
+  };
+
   useEffect(() => {
     dispatch(fetchTodos());
   }, [dispatch]);
+
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   return (
     <div className="min-h-screen rounded-2xl bg-gradient-to-br from-blue-50 to-white py-12">
@@ -51,6 +70,37 @@ export default function TodoList() {
             Todo List
           </h1>
         </div>
+
+        {/* Login/Logout Button */}
+        <div className="flex justify-center mb-8">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="w-32 py-2 px-4 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="w-32 py-2 px-4 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
+            >
+              Login
+            </button>
+          )}
+        </div>
+
+        {/* Add New Task Button */}
+        {isLoggedIn && (
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={() => navigate("/todo-form")}
+              className="w-32 py-2 px-4 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition duration-300"
+            >
+              Add New Task
+            </button>
+          </div>
+        )}
 
         {/* Empty State */}
         {todos && todos.length === 0 ? (

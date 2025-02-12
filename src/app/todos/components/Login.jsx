@@ -1,52 +1,137 @@
-import { useState } from "react";
+// Login.js
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import PropTypes from "prop-types"; // Import PropTypes for validation
+import * as Yup from "yup"; // Import Yup for validation
+import LogoutButton from "./LogoutButton"; // Import the LogoutButton component
 
 const Login = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate(); // Initialize navigate
 
-  const handleLogin = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (
-      userData &&
-      userData.username === username &&
-      userData.password === password
-    ) {
+  // Yup validation schema
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .matches(
+        /^[A-Za-z]+$/,
+        "Username cannot contain numbers or special characters"
+      ) // Ensures only letters are allowed
+      .matches(/^\S*$/, "Username cannot contain spaces") // Ensures no spaces in the username
+      .required("Username is required"),
+    password: Yup.string()
+      .matches(/^\S*$/, "Password cannot contain spaces") // Ensures no spaces in the password
+      .min(3, "Password must be at least 3 characters long") // Ensures password is at least 6 characters
+      .required("Password is required"),
+  });
+
+  // Function to check if the user is logged in (using localStorage)
+  const checkLoginStatus = () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (isLoggedIn) {
       setIsLoggedIn(true);
-      localStorage.setItem("isLoggedIn", "true");
-      navigate("/todo-list"); // Redirect to todo-list after successful login
-    } else {
-      alert("Invalid credentials. Please try again.");
+      navigate("/todo-list"); // Redirect to todo-list if already logged in
     }
   };
+
+  // Validate the input fields on change
+  const validateField = async (fieldName, value) => {
+    try {
+      await validationSchema.validateAt(fieldName, { [fieldName]: value });
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
+    } catch (err) {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: err.message }));
+    }
+  };
+
+  // Handle change of input field (username or password)
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "username") {
+      setUsername(value);
+      validateField("username", value);
+    } else if (id === "password") {
+      setPassword(value);
+      validateField("password", value);
+    }
+  };
+
+  // Handle login when the user clicks the login button
+  const handleLogin = () => {
+    // Clear any previous errors
+    setErrors({});
+
+    // Create an object to validate
+    const formData = { username, password };
+
+    // Validate the form data using Yup
+    validationSchema
+      .validate(formData, { abortEarly: false }) // Validate all fields
+      .then(() => {
+        // If validation is successful, proceed with login
+        const users = JSON.parse(localStorage.getItem("users")) || []; // Get the users array from localStorage
+
+        // Check if a user with matching credentials exists in the users array
+        const userData = users.find(
+          (user) => user.username === username && user.password === password
+        );
+
+        if (userData) {
+          // If user is found, set logged-in state and navigate to the todo list
+          setIsLoggedIn(true);
+          localStorage.setItem("isLoggedIn", "true");
+          navigate("/todo-list"); // Redirect to todo-list after successful login
+        } else {
+          // If user is not found, show an alert
+          alert("Invalid credentials. Please try again.");
+          setUsername(""); // Clear username input
+          setPassword(""); // Clear password input
+        }
+      })
+      .catch((err) => {
+        // If validation fails, set errors in state
+        const formErrors = {};
+        err.inner.forEach((e) => {
+          formErrors[e.path] = e.message;
+        });
+        setErrors(formErrors);
+      });
+  };
+
+  // Check login status when the component mounts
+  useEffect(() => {
+    checkLoginStatus();
+  });
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg space-y-6">
         <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
-          Login to Your Account
+          Login
         </h2>
 
         <div className="space-y-6">
-          {/* Email Input */}
+          {/* Username Input */}
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-700"
             >
-              Email
+              Username
             </label>
             <input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
+              id="username"
+              type="text"
+              placeholder="Enter your username"
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleChange}
             />
+            {errors.username && (
+              <div className="text-red-500 text-sm mt-1">{errors.username}</div>
+            )}
           </div>
 
           {/* Password Input */}
@@ -63,8 +148,11 @@ const Login = ({ setIsLoggedIn }) => {
               placeholder="Enter your password"
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
             />
+            {errors.password && (
+              <div className="text-red-500 text-sm mt-1">{errors.password}</div>
+            )}
           </div>
 
           {/* Login Button */}
@@ -87,6 +175,11 @@ const Login = ({ setIsLoggedIn }) => {
             Sign up here
           </button>
         </div>
+
+        {/* Logout Button (Visible only when logged in) */}
+        {localStorage.getItem("isLoggedIn") === "true" && (
+          <LogoutButton setIsLoggedIn={setIsLoggedIn} /> // Use the LogoutButton component here
+        )}
       </div>
     </div>
   );
