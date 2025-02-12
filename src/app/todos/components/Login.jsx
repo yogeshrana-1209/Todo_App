@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import PropTypes from "prop-types"; // Import PropTypes for validation
 
 const Login = ({ setIsLoggedIn }) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate(); // Initialize navigate
@@ -12,7 +12,7 @@ const Login = ({ setIsLoggedIn }) => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (
       userData &&
-      userData.email === email &&
+      userData.username === username &&
       userData.password === password
     ) {
       setIsLoggedIn(true);
@@ -44,8 +44,8 @@ const Login = ({ setIsLoggedIn }) => {
               type="email"
               placeholder="Enter your email"
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 

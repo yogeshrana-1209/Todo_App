@@ -10,11 +10,26 @@ const axiosInstance = axios.create({
   },
 });
 
+//GET request function
+export const getRequest = () => {
+  return axiosInstance.get('todos');
+};
 
+//POST request function
+export const postRequest = (requestedData) => {
+  return axiosInstance.post('/todos', requestedData );
+}
 
+//PUT request function
+export const putRequest = (todo) => {
+  return axiosInstance.put(`/todos/${todo.id}`, todo );
+}
 
-
-
-
+//DELETE request function
+export const deleteRequest = (id) => {
+  return axiosInstance.delete(`/todos/${id}`);
+}
 
 export default axiosInstance;
+
+
