@@ -10,6 +10,7 @@ import Login from "./app/todos/components/Login";
 import Signup from "./app/todos/components/Signup";
 import TodoForm from "./app/todos/components/TodoForm";
 import TodoList from "./app/todos/components/TodoList";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,6 +34,8 @@ function App() {
 
   return (
     <div>
+
+      <ToastContainer/>
       <Router>
         <Routes>
         <Route

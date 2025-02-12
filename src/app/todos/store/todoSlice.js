@@ -36,9 +36,10 @@ export const fetchTodos = () => async (dispatch) => {
 // Add a new todo to the server
 export const submitForm = (requestedData) => async (dispatch) => {
   try {
-    const response = await postRequest(requestedData);
+    const response = await postRequest('/todos',requestedData);
     dispatch(addTodo(response.data));
     SuccessNotify("Item Added Successfully");
+    return true;
   } catch (error) {
     console.error(error);
     DangerNotify("Failed to add todo");
@@ -55,7 +56,7 @@ export const submitForm = (requestedData) => async (dispatch) => {
 
 export const updateForm = (todo) => async (dispatch) => {
   try {
-    const response = await putRequest(`/todos/${todo.id}`, todo);
+    const response = await putRequest(`/todos/${todo.id}`,todo);
     dispatch(updateTodo(response.data));
     SuccessNotify("Todo Updated Successfully");
     dispatch(setSelectedTodo(null)); // Clear selected todo after update

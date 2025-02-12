@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
 import TodoCard from "./TodoCard"; // Import the TodoCard component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { ToastContainer } from "react-toastify";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -62,6 +63,9 @@ export default function TodoList() {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   return (
+      <>
+    <ToastContainer/>
+
     <div className="min-h-screen rounded-2xl bg-gradient-to-br from-blue-50 to-white py-12">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
@@ -71,24 +75,7 @@ export default function TodoList() {
           </h1>
         </div>
 
-        {/* Login/Logout Button */}
-        <div className="flex justify-center mb-8">
-          {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="w-32 py-2 px-4 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
-            >
-              Logout
-            </button>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="w-32 py-2 px-4 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
-            >
-              Login
-            </button>
-          )}
-        </div>
+        
 
         {/* Add New Task Button */}
         {isLoggedIn && (
@@ -124,6 +111,25 @@ export default function TodoList() {
         )}
       </div>
 
+      {/* Login/Logout Button */}
+      <div className="flex justify-around m-[40px]">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="w-32 py-2 px-4 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="w-32 py-2 px-4 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
+            >
+              Login
+            </button>
+          )}
+        </div>
+
       {/* Confirmation Modal */}
       <ConfirmModal
         isOpen={isModalOpen}
@@ -132,5 +138,6 @@ export default function TodoList() {
         message="Are you sure you want to delete this todo?"
       />
     </div>
+    </>
   );
 }

@@ -2,13 +2,16 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedTodo, submitForm, updateForm } from "../store/TodoSlice";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 import moment from "moment";
 import * as Yup from "yup"; // Import Yup
+import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 
 export default function TodoForm() {
   const dispatch = useDispatch();
   const selectedTodo = useSelector(getSelectedTodo);
+  const navigate = useNavigate();
 
   // Updated validationSchema
   const validationSchema = Yup.object().shape({
@@ -94,7 +97,8 @@ export default function TodoForm() {
       dispatch(updateForm(updatedTodo)).then((response) => {
         console.log("updated", response);
         if (response) {
-          reset();
+          reset(); // Reset the form after successful update
+          navigate("/todo-list"); // Redirect to the todo-list page after update
         }
       });
     } else {
@@ -102,7 +106,12 @@ export default function TodoForm() {
         id: Date.now(),
         ...data,
       };
-      dispatch(submitForm(requestedData));
+      dispatch(submitForm(requestedData)).then((response) => {
+        if(response){
+          navigate('/todo-list');
+        }
+      })
+      
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth", // Optional: for smooth scrolling
@@ -110,160 +119,165 @@ export default function TodoForm() {
       reset();
     }
   };
+  
 
   return (
-    <div className="flex justify-center text-left items-center bg-gradient-to-r from-white-500 via-white-500 to-white-500">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <h2 className="text-3xl font-semibold text-center text-gray-800">
-            {selectedTodo ? "Update Todo" : "Add Todo"}
-          </h2>
+    <>
+      <ToastContainer />
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-semibold mb-2">
-                Name
-              </label>
-              <input
-                {...register("name")}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out"
-                placeholder="Enter task name"
-              />
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
+      <div className="flex justify-center text-left mt-[40px] p-5 items-center bg-gradient-to-r from-white-500 via-white-500 to-white-500">
+        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <h2 className="text-3xl font-semibold text-center text-gray-800">
+              {selectedTodo ? "Update Todo" : "Add Todo"}
+            </h2>
 
-            <div>
-              <label className="block text-gray-700 text-sm font-semibold mb-2">
-                Description
-              </label>
-              <textarea
-                {...register("description")}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out min-h-[100px]"
-                placeholder="Enter task description"
-              />
-              {errors.description && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
-
-            <div className="relative">
-              <label className="block text-gray-700 text-sm font-semibold mb-2">
-                Due Date
-              </label>
-              <div className="relative">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  Name
+                </label>
                 <input
-                  type="date"
-                  {...register("date")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out appearance-none bg-white text-gray-700 text-sm leading-tight hover:border-indigo-500 active:border-indigo-500 touch-manipulation"
+                  {...register("name")}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out"
+                  placeholder="Enter task name"
                 />
-                {errors.date && (
+                {errors.name && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.date.message}
+                    {errors.name.message}
                   </p>
                 )}
               </div>
-            </div>
 
-            <div>
-              <p className="text-gray-700 text-sm font-semibold mb-2">
-                Priority
-              </p>
-              <div className="flex gap-6">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="high"
-                    {...register("priority")}
-                    className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
-                  />
-                  <span className="ml-2 text-gray-700 text-sm">High</span>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  Description
                 </label>
-                <label className="flex items-center">
+                <textarea
+                  {...register("description")}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out min-h-[100px]"
+                  placeholder="Enter task description"
+                />
+                {errors.description && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="relative">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  Due Date
+                </label>
+                <div className="relative">
                   <input
-                    type="radio"
-                    value="low"
-                    {...register("priority")}
-                    className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                    type="date"
+                    {...register("date")}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out appearance-none bg-white text-gray-700 text-sm leading-tight hover:border-indigo-500 active:border-indigo-500 touch-manipulation"
                   />
-                  <span className="ml-2 text-gray-700 text-sm">Low</span>
+                  {errors.date && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.date.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-gray-700 text-sm font-semibold mb-2">
+                  Priority
+                </p>
+                <div className="flex gap-6">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="high"
+                      {...register("priority")}
+                      className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
+                    />
+                    <span className="ml-2 text-gray-700 text-sm">High</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="low"
+                      {...register("priority")}
+                      className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                    />
+                    <span className="ml-2 text-gray-700 text-sm">Low</span>
+                  </label>
+                </div>
+                {errors.priority && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.priority.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  Status
+                </label>
+                <select
+                  {...register("status")}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700"
+                >
+                  <option
+                    value=""
+                    className="py-2 px-4 text-gray-600 bg-white hover:bg-gray-100"
+                  >
+                    Select an Option
+                  </option>
+                  <option
+                    value="Done"
+                    className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
+                  >
+                    Done
+                  </option>
+                  <option
+                    value="Pending"
+                    className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
+                  >
+                    Pending
+                  </option>
+                </select>
+                {errors.status && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.status.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  id="agree"
+                  type="checkbox"
+                  {...register("agreed")}
+                  className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                />
+                <label
+                  htmlFor="agree"
+                  className="ml-2 text-gray-700 text-sm cursor-pointer"
+                >
+                  I agree to the terms
                 </label>
               </div>
-              {errors.priority && (
+              {errors.agreed && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.priority.message}
+                  {errors.agreed.message}
                 </p>
               )}
-            </div>
 
-            <div>
-              <label className="block text-gray-700 text-sm font-semibold mb-2">
-                Status
-              </label>
-              <select
-                {...register("status")}
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700"
+              <button
+                type="submit"
+                className="w-full py-3 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
               >
-                <option
-                  value=""
-                  className="py-2 px-4 text-gray-600 bg-white hover:bg-gray-100"
-                >
-                  Select an Option
-                </option>
-                <option
-                  value="Done"
-                  className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
-                >
-                  Done
-                </option>
-                <option
-                  value="Pending"
-                  className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
-                >
-                  Pending
-                </option>
-              </select>
-              {errors.status && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.status.message}
-                </p>
-              )}
+                {selectedTodo ? "Update Todo" : "Add Todo"}
+              </button>
             </div>
-
-            <div className="flex items-center">
-              <input
-                id="agree"
-                type="checkbox"
-                {...register("agreed")}
-                className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
-              />
-              <label
-                htmlFor="agree"
-                className="ml-2 text-gray-700 text-sm cursor-pointer"
-              >
-                I agree to the terms
-              </label>
-            </div>
-            {errors.agreed && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.agreed.message}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full py-3 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
-            >
-              {selectedTodo ? "Update Todo" : "Add Todo"}
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

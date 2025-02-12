@@ -16,18 +16,18 @@ export const getRequest = () => {
 };
 
 //POST request function
-export const postRequest = (requestedData) => {
-  return axiosInstance.post("/todos", requestedData );
+export const postRequest = async (url,requestedData) => {
+  return await axiosInstance.post(url, requestedData );
 }
 
 //PUT request function
-export const putRequest = (todo) => {
-  return axiosInstance.put(`/todos/${todo.id}`, todo );
+export const putRequest = async (url,todo) => {
+  return await axiosInstance.put(url,todo);
 }
 
 //DELETE request function
-export const deleteRequest = (id) => {
-  return axiosInstance.delete(`/todos/${id}`);
+export const deleteRequest = async (id) => {
+  return await axiosInstance.delete(id);
 }
 
 export default axiosInstance;
