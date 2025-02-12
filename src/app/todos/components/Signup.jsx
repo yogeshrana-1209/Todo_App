@@ -95,7 +95,7 @@ const Signup = ({ setIsLoggedIn }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-md m-[20px] bg-white p-8 rounded-xl shadow-lg">
         <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
           Sign Up
         </h2>

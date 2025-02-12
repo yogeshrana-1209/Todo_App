@@ -5,12 +5,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import PropTypes from "prop-types"; // Import prop-types
+import PropTypes from "prop-types";
 import Login from "./app/todos/components/Login";
 import Signup from "./app/todos/components/Signup";
 import TodoForm from "./app/todos/components/TodoForm";
 import TodoList from "./app/todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
+import NotFound from "./app/todos/components/NotFound"; // Import NotFound
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,29 +30,19 @@ function App() {
 
   // Add PropType validation for the children prop
   ProtectedRoute.propTypes = {
-    children: PropTypes.node.isRequired, // Ensure children is a valid React node
+    children: PropTypes.node.isRequired,
   };
 
   return (
     <div>
-
-      <ToastContainer/>
+      <ToastContainer />
       <Router>
         <Routes>
-        <Route
-            path="/"
-            element={<Login setIsLoggedIn={setIsLoggedIn} />}
-          />
+          <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
 
           {/* Public Routes */}
-          <Route
-            path="/login"
-            element={<Login setIsLoggedIn={setIsLoggedIn} />}
-          />
-          <Route
-            path="/signup"
-            element={<Signup setIsLoggedIn={setIsLoggedIn} />}
-          />
+          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
 
           {/* Protected Routes */}
           <Route
@@ -72,10 +63,10 @@ function App() {
           />
 
           {/* Redirect to login if accessing root without logging in */}
-          <Route
-            path="/"
-            element={<Navigate to={isLoggedIn ? "/todo-list" : "/login"} />}
-          />
+          <Route path="/" element={<Navigate to={isLoggedIn ? "/todo-list" : "/login"} />} />
+
+          {/* Catch-all route for undefined paths */}
+          <Route path="*" element={<NotFound />} /> {/* Add this route */}
         </Routes>
       </Router>
     </div>
