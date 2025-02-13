@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedTodo, submitForm, updateForm } from "../store/TodoSlice";
+import { getSelectedTodo, submitForm, updateForm } from "../store/todoSlice";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import moment from "moment";

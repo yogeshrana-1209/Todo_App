@@ -6,7 +6,7 @@ import {
   fetchTodos,
   login,
   logout,
-} from "../store/TodoSlice";
+} from "../store/todoSlice";
 import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
 import TodoCard from "./TodoCard"; // Import the TodoCard component
