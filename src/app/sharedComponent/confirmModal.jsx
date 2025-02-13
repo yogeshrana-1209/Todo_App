@@ -5,7 +5,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <div className="bg-white m-4 p-6 rounded-lg shadow-lg max-w-sm w-full">
         <h3 className="text-lg font-semibold text-gray-700 text-left">
           Are you sure you want to delete this todo?
         </h3>

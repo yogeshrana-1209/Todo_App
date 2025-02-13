@@ -10,26 +10,34 @@ const axiosInstance = axios.create({
   },
 });
 
-//GET request function
-export const getRequest = () => {
-  return axiosInstance.get('/todos');
-};
+// //GET request function
+// export const getRequest = (url) => {
+//   return axiosInstance.get(url);
+// };
 
-//POST request function
-export const postRequest = async (url,requestedData) => {
-  return await axiosInstance.post(url, requestedData );
+// //POST request function
+// export const postRequest = async (url,requestedData) => {
+//   return await axiosInstance.post(url, requestedData );
+// }
+
+// //PUT request function
+// export const putRequest = async (url,todo) => {
+//   return await axiosInstance.put(url,todo);
+// }
+
+// //DELETE request function
+// export const deleteRequest = async (id) => {
+//   return await axiosInstance.delete(id);
+// }
+
+const api = {
+  get: (url) => axiosInstance.get(url),
+  post: (url, data) => axiosInstance.post(url, data),
+  put: (url, data) => axiosInstance.put(url, data),
+  delete: (url) => axiosInstance.delete(url),
 }
 
-//PUT request function
-export const putRequest = async (url,todo) => {
-  return await axiosInstance.put(url,todo);
-}
-
-//DELETE request function
-export const deleteRequest = async (id) => {
-  return await axiosInstance.delete(id);
-}
-
-export default axiosInstance;
+// export default axiosInstance;
+export default api;
 
 

@@ -3,12 +3,7 @@ import {
   SuccessNotify,
   DangerNotify,
 } from "../../sharedComponent/notification";
-import {
-  getRequest,
-  putRequest,
-  postRequest,
-  deleteRequest,
-} from "../../services/api/utils/axiosConfig";
+import api from "../../services/api/utils/axiosConfig";
 
 const initialState = {
   todos: [],
@@ -19,7 +14,7 @@ const initialState = {
 // Fetch todos from the server
 export const fetchTodos = () => async (dispatch) => {
   try {
-    const response = await getRequest();
+    const response = await api.get('/todos');
     dispatch(setTodos(response.data));
   } catch (error) {
     console.error(error);
@@ -36,7 +31,7 @@ export const fetchTodos = () => async (dispatch) => {
 // Add a new todo to the server
 export const submitForm = (requestedData) => async (dispatch) => {
   try {
-    const response = await postRequest('/todos',requestedData);
+    const response = await api.post('/todos',requestedData);
     dispatch(addTodo(response.data));
     SuccessNotify("Item Added Successfully");
     return true;
@@ -56,7 +51,7 @@ export const submitForm = (requestedData) => async (dispatch) => {
 
 export const updateForm = (todo) => async (dispatch) => {
   try {
-    const response = await putRequest(`/todos/${todo.id}`,todo);
+    const response = await api.put(`/todos/${todo.id}`,todo);
     dispatch(updateTodo(response.data));
     SuccessNotify("Todo Updated Successfully");
     dispatch(setSelectedTodo(null)); // Clear selected todo after update
@@ -76,7 +71,7 @@ export const updateForm = (todo) => async (dispatch) => {
 
 export const deleteForm = (id) => async (dispatch) => {
   try {
-    await deleteRequest(`/todos/${id}`);
+    await api.delete(`/todos/${id}`);
     dispatch(deleteTodo(id));
     SuccessNotify("Item Deleted Successfully");
   } catch (error) {
