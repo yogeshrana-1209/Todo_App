@@ -12,6 +12,7 @@ import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your Co
 import TodoCard from "./TodoCard"; // Import the TodoCard component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { ToastContainer } from "react-toastify";
+import LoadingSpinner from ".././components/LoadingSpinner"; // Import the LoadingSpinner
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -20,6 +21,8 @@ export default function TodoList() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [loaderDelay, setLoaderDelay] = useState(false); // For ensuring loader is shown for a minimum time
 
   const handleEdit = (todo) => {
     navigate("/todo-form");
@@ -45,7 +48,6 @@ export default function TodoList() {
   };
 
   const handleLogout = () => {
-    // localStorage.setItem("isLoggedIn", "false");
     dispatch(logout());
     navigate("/login"); // Redirect to the login page after logout
   };
@@ -56,7 +58,26 @@ export default function TodoList() {
   };
 
   useEffect(() => {
-    dispatch(fetchTodos());
+    // Set loading to true before fetching data
+    setLoading(true);
+    setLoaderDelay(true); // Start the loader delay
+
+    dispatch(fetchTodos())
+      .then(() => {
+        // Set loading to false once fetching is complete
+        setLoading(false);
+      })
+      .catch(() => {
+        // Handle any errors here and set loading to false
+        setLoading(false);
+      });
+
+    // Set loader to stay visible for at least 1 second
+    const timer = setTimeout(() => {
+      setLoaderDelay(false); // Stop the loader delay after 1 second
+    }, 1000);
+
+    return () => clearTimeout(timer); // Clean up the timer on unmount
   }, [dispatch]);
 
   // Check if user is logged in
@@ -87,25 +108,31 @@ export default function TodoList() {
             </div>
           )}
 
-          {/* Empty State */}
-          {todos && todos.length === 0 ? (
-            <div className="max-w-lg mx-auto bg-white p-8 text-center shadow-lg rounded-2xl border-2 border-dashed border-gray-300 transform hover:scale-102 transition-all duration-300">
-              <p className="text-xl text-gray-500 font-medium">
-                No todos yet. Add your first todo!
-              </p>
-            </div>
+          {/* Loading Spinner */}
+          {loading || loaderDelay ? (
+            <LoadingSpinner /> // Show the spinner while loading or during loader delay
           ) : (
-            /* Todo Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {todos?.map((todo) => (
-                <TodoCard
-                  key={todo.id}
-                  todo={todo}
-                  onEdit={handleEdit}
-                  onDelete={openDeleteModal}
-                />
-              ))}
-            </div>
+            // Empty State or Todo Grid
+            <>
+              {todos && todos.length === 0 ? (
+                <div className="max-w-lg mx-auto bg-white p-8 text-center shadow-lg rounded-2xl border-2 border-dashed border-gray-300 transform hover:scale-102 transition-all duration-300">
+                  <p className="text-xl text-gray-500 font-medium">
+                    No todos yet. Add your first todo!
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                  {todos?.map((todo) => (
+                    <TodoCard
+                      key={todo.id}
+                      todo={todo}
+                      onEdit={handleEdit}
+                      onDelete={openDeleteModal}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
 
