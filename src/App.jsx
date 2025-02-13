@@ -6,12 +6,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import PropTypes from "prop-types";
-import Login from "./app/todos/components/Login";
-import Signup from "./app/todos/components/Signup";
+import Login from "./App/login/Login";
+import Signup from "./App/signup/Signup";
 import TodoForm from "./app/todos/components/TodoForm";
 import TodoList from "./app/todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
-import NotFound from "./app/todos/components/NotFound"; // Import NotFound
+import NotFound from "./App/sharedComponent/notFound"; // Import NotFound
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,7 +63,7 @@ function App() {
           />
 
           {/* Redirect to login if accessing root without logging in */}
-          <Route path="/" element={<Navigate to={isLoggedIn ? "/todo-list" : "/login"} />} />
+          {/* <Route path="/" element={<Navigate to={isLoggedIn ? "/todo-list" : "/login"} />} /> */}
 
           {/* Catch-all route for undefined paths */}
           <Route path="*" element={<NotFound />} /> {/* Add this route */}

@@ -1,16 +1,18 @@
-// Login.js
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {  useNavigate } from "react-router-dom"; // Import useNavigate
 import PropTypes from "prop-types"; // Import PropTypes for validation
 import * as Yup from "yup"; // Import Yup for validation
-import LogoutButton from "./LogoutButton"; // Import the LogoutButton component
+import LogoutButton from "../sharedComponent/logoutButton"; // Import the LogoutButton component
 
 const Login = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loginError, setLoginError] = useState(""); // Added state for login error
 
   const navigate = useNavigate(); // Initialize navigate
+//   const location = useLocation();
+// console.log(location, "Location")
 
   // Yup validation schema
   const validationSchema = Yup.object({
@@ -23,7 +25,7 @@ const Login = ({ setIsLoggedIn }) => {
       .required("Username is required"),
     password: Yup.string()
       .matches(/^\S*$/, "Password cannot contain spaces") // Ensures no spaces in the password
-      .min(3, "Password must be at least 3 characters long") // Ensures password is at least 6 characters
+      .min(3, "Password must be at least 3 characters long") // Ensures password is at least 3 characters
       .required("Password is required"),
   });
 
@@ -62,6 +64,7 @@ const Login = ({ setIsLoggedIn }) => {
   const handleLogin = () => {
     // Clear any previous errors
     setErrors({});
+    setLoginError(""); // Clear previous login errors
 
     // Create an object to validate
     const formData = { username, password };
@@ -84,8 +87,8 @@ const Login = ({ setIsLoggedIn }) => {
           localStorage.setItem("isLoggedIn", "true");
           navigate("/todo-list"); // Redirect to todo-list after successful login
         } else {
-          // If user is not found, show an alert
-          alert("Invalid credentials. Please try again.");
+          // If user is not found, show an error message below the form
+          setLoginError("Invalid username or password. Please try again.");
           setUsername(""); // Clear username input
           setPassword(""); // Clear password input
         }
@@ -154,6 +157,9 @@ const Login = ({ setIsLoggedIn }) => {
               <div className="text-red-500 text-sm mt-1">{errors.password}</div>
             )}
           </div>
+
+          {/* Display login error message */}
+          {loginError && <div className="text-red-500 text-left text-sm mt-2">{loginError}</div>}
 
           {/* Login Button */}
           <div className="mt-6">

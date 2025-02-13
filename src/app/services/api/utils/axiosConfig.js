@@ -35,9 +35,7 @@ const api = {
   post: (url, data) => axiosInstance.post(url, data),
   put: (url, data) => axiosInstance.put(url, data),
   delete: (url) => axiosInstance.delete(url),
-}
+};
 
 // export default axiosInstance;
 export default api;
-
-

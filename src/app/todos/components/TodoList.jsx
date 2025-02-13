@@ -6,13 +6,13 @@ import {
   fetchTodos,
   login,
   logout,
-} from "../store/todoSlice";
+} from "../store/TodoSlice";
 import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
 import TodoCard from "./TodoCard"; // Import the TodoCard component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { ToastContainer } from "react-toastify";
-import LoadingSpinner from ".././components/LoadingSpinner"; // Import the LoadingSpinner
+import LoadingSpinner from "../../sharedComponent/loadingSpinner"; // Import the LoadingSpinner
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -25,7 +25,7 @@ export default function TodoList() {
   const [loaderDelay, setLoaderDelay] = useState(false); // For ensuring loader is shown for a minimum time
 
   const handleEdit = (todo) => {
-    navigate("/todo-form");
+    navigate(`/todo-form?id=${todo.id}`);
     dispatch(setSelectedTodo(todo));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -83,6 +83,11 @@ export default function TodoList() {
   // Check if user is logged in
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
+  const handleAddNewTask = () => {
+    dispatch(setSelectedTodo(null)); // Clear the selectedTodo state
+    navigate("/todo-form"); // Navigate to the form for adding a new task
+  };
+
   return (
     <>
       <ToastContainer />
@@ -100,7 +105,7 @@ export default function TodoList() {
           {isLoggedIn && (
             <div className="flex justify-center mb-8 items-center">
               <button
-                onClick={() => navigate("/todo-form")}
+                onClick={handleAddNewTask} // Use handleAddNewTask to clear selectedTodo
                 className="w-44 py-2 px-4 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition duration-300"
               >
                 Add New Task

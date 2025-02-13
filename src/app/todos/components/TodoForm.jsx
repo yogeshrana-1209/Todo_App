@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedTodo, submitForm, updateForm } from "../store/todoSlice";
+import { getSelectedTodo, submitForm, updateForm } from "../store/TodoSlice";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import moment from "moment";
@@ -29,8 +29,8 @@ export default function TodoForm() {
       .trim() // This removes any extra spaces around the description
       .matches(/^(?!\s*$).+/, "Description cannot be empty or spaces")
       .matches(
-        /^[A-Za-z]+( [A-Za-z]+)*$/, // Regex that allows no consecutive spaces
-        "Name cannot contain special characters, numbers, or consecutive spaces"
+        /^[A-Za-z\s]+$/, // Updated regex: allows only alphabetic characters and spaces (no numbers)
+        "Description cannot contain special characters or consecutive spaces"
       ),
 
     date: Yup.date()
@@ -107,11 +107,11 @@ export default function TodoForm() {
         ...data,
       };
       dispatch(submitForm(requestedData)).then((response) => {
-        if(response){
-          navigate('/todo-list');
+        if (response) {
+          navigate("/todo-list");
         }
-      })
-      
+      });
+
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth", // Optional: for smooth scrolling
@@ -119,7 +119,6 @@ export default function TodoForm() {
       reset();
     }
   };
-  
 
   return (
     <>
@@ -135,7 +134,7 @@ export default function TodoForm() {
             <div className="space-y-4">
               <div>
                 <label className="block text-gray-700 text-sm font-semibold mb-2">
-                  Name
+                  Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register("name")}
@@ -151,7 +150,7 @@ export default function TodoForm() {
 
               <div>
                 <label className="block text-gray-700 text-sm font-semibold mb-2">
-                  Description
+                  Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   {...register("description")}
@@ -167,7 +166,7 @@ export default function TodoForm() {
 
               <div className="relative">
                 <label className="block text-gray-700 text-sm font-semibold mb-2">
-                  Due Date
+                  Due Date <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -185,7 +184,7 @@ export default function TodoForm() {
 
               <div>
                 <p className="text-gray-700 text-sm font-semibold mb-2">
-                  Priority
+                  Priority <span className="text-red-500">*</span>
                 </p>
                 <div className="flex gap-6">
                   <label className="flex items-center">
@@ -216,31 +215,42 @@ export default function TodoForm() {
 
               <div>
                 <label className="block text-gray-700 text-sm font-semibold mb-2">
-                  Status
+                  Status <span className="text-red-500">*</span>
                 </label>
-                <select
-                  {...register("status")}
-                  className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700"
-                >
-                  <option
-                    value=""
-                    className="py-2 px-4 text-gray-600 bg-white hover:bg-gray-100"
+                <div className="relative">
+                  <select
+                    {...register("status")}
+                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700 appearance-none"
                   >
-                    Select an Option
-                  </option>
-                  <option
-                    value="Done"
-                    className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
-                  >
-                    Done
-                  </option>
-                  <option
-                    value="Pending"
-                    className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
-                  >
-                    Pending
-                  </option>
-                </select>
+                    <option
+                      value=""
+                      className="py-2 px-4 text-gray-600 bg-white hover:bg-gray-100"
+                    >
+                      Select an Option
+                    </option>
+                    <option
+                      value="Done"
+                      className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
+                    >
+                      Done
+                    </option>
+                    <option
+                      value="Pending"
+                      className="py-2 px-4 text-gray-700 bg-white hover:bg-gray-100"
+                    >
+                      Pending
+                    </option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg
+                      className="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </div>
+                </div>
                 {errors.status && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.status.message}
@@ -259,7 +269,7 @@ export default function TodoForm() {
                   htmlFor="agree"
                   className="ml-2 text-gray-700 text-sm cursor-pointer"
                 >
-                  I agree to the terms
+                  I agree to the terms <span className="text-red-500">*</span>
                 </label>
               </div>
               {errors.agreed && (
