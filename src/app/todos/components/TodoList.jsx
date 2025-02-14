@@ -87,12 +87,11 @@ export default function TodoList() {
 
   return (
     <>
-      <ToastContainer />
 
       <div className="min-h-screen rounded-2xl bg-gradient-to-br from-blue-50 to-white py-12">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Section */}
-          <div className="text-center mb-12">
+          <div className="text-center m-8">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-5 inline-block border-2 border-blue-600 rounded-2xl bg-blue-50/50 px-8 py-4 shadow-md backdrop-blur-sm transform hover:scale-105 transition-all duration-300">
               Todo List
             </h1>
@@ -100,12 +99,12 @@ export default function TodoList() {
 
           {/* Add New Task Button */}
           {isLoggedIn && (
-            <div className="flex justify-center mb-8 items-center">
+            <div className="flex justify-center m-6 items-center">
               <button
                 onClick={handleAddNewTask} // Use handleAddNewTask to clear selectedTodo
                 className="w-44 py-2 px-4 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition duration-300"
               >
-                Add New Task
+               +  Add New Task
               </button>
             </div>
           )}

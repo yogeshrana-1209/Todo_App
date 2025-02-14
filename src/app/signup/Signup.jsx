@@ -8,7 +8,7 @@ import { login } from "../todos/store/AuthSlice";
 // Yup validation schema
 const validationSchema = Yup.object({
   username: Yup.string()
-    .matches(/^[A-Za-z]+$/, "Username cannot contain numbers or special characters") // Ensures only letters are allowed
+    .matches(/^[A-Za-z]/, "Username cannot contain or special characters") // Ensures only letters are allowed
     .matches(/^\S*$/, "Username cannot contain spaces") // Ensures no spaces in the username
     .required("Username is required"),
   password: Yup.string()

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedTodo, submitForm, updateForm } from "../store/TodoSlice";
 import { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import moment from "moment";
 import * as Yup from "yup"; // Import Yup
 import { useNavigate } from "react-router-dom";
@@ -95,7 +95,7 @@ export default function TodoForm() {
     if (selectedTodo) {
       const updatedTodo = { ...selectedTodo, ...data };
       dispatch(updateForm(updatedTodo)).then((response) => {
-        console.log("updated", response);
+        // console.log("updated", response);
         if (response) {
           reset(); // Reset the form after successful update
           navigate("/todo-list"); // Redirect to the todo-list page after update
@@ -122,8 +122,6 @@ export default function TodoForm() {
 
   return (
     <>
-      <ToastContainer />
-
       <div className="flex justify-center text-left mt-[40px] p-5 items-center bg-gradient-to-r from-white-500 via-white-500 to-white-500">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
