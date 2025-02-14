@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import {  useNavigate } from "react-router-dom"; // Import useNavigate
-import PropTypes from "prop-types"; // Import PropTypes for validation
+// import PropTypes from "prop-types"; // Import PropTypes for validation
 import * as Yup from "yup"; // Import Yup for validation
-import LogoutButton from "../sharedComponent/logoutButton"; // Import the LogoutButton component
+// import LogoutButton from "../sharedComponent/logoutButton"; // Import the LogoutButton component
+import { useDispatch } from "react-redux";
+import {login} from "../todos/store/AuthSlice";
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(""); // Added state for login error
 
   const navigate = useNavigate(); // Initialize navigate
-//   const location = useLocation();
-// console.log(location, "Location")
+  const dispatch = useDispatch();
 
   // Yup validation schema
   const validationSchema = Yup.object({
@@ -33,7 +34,6 @@ const Login = ({ setIsLoggedIn }) => {
   const checkLoginStatus = () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (isLoggedIn) {
-      setIsLoggedIn(true);
       navigate("/todo-list"); // Redirect to todo-list if already logged in
     }
   };
@@ -83,7 +83,7 @@ const Login = ({ setIsLoggedIn }) => {
 
         if (userData) {
           // If user is found, set logged-in state and navigate to the todo list
-          setIsLoggedIn(true);
+          dispatch(login(userData)); // Dispatch login action
           localStorage.setItem("isLoggedIn", "true");
           navigate("/todo-list"); // Redirect to todo-list after successful login
         } else {
@@ -106,7 +106,7 @@ const Login = ({ setIsLoggedIn }) => {
   // Check login status when the component mounts
   useEffect(() => {
     checkLoginStatus();
-  });
+  }, []);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -182,18 +182,14 @@ const Login = ({ setIsLoggedIn }) => {
           </button>
         </div>
 
-        {/* Logout Button (Visible only when logged in) */}
-        {localStorage.getItem("isLoggedIn") === "true" && (
-          <LogoutButton setIsLoggedIn={setIsLoggedIn} /> // Use the LogoutButton component here
-        )}
       </div>
     </div>
   );
 };
 
 // PropTypes validation for Login component
-Login.propTypes = {
-  setIsLoggedIn: PropTypes.func.isRequired, // Validate that setIsLoggedIn is a required function
-};
+// Login.propTypes = {
+//   setIsLoggedIn: PropTypes.func.isRequired, // Validate that setIsLoggedIn is a required function
+// };
 
 export default Login;

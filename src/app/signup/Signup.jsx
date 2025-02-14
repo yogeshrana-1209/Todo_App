@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types"; // Import PropTypes
+// import PropTypes from "prop-types"; // Import PropTypes
 import * as Yup from "yup"; // Import Yup for validation
+import { useDispatch } from "react-redux";
+import { login } from "../todos/store/AuthSlice";
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -16,11 +18,12 @@ const validationSchema = Yup.object({
 });
 
 
-const Signup = ({ setIsLoggedIn }) => {
+const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Handle form submission
   const handleSignup = () => {
@@ -42,8 +45,9 @@ const Signup = ({ setIsLoggedIn }) => {
         // Store the updated list of users back in localStorage
         localStorage.setItem("users", JSON.stringify(users));
 
-        // Set the user as logged in
-        setIsLoggedIn(true);
+        //Dispatch Login after registration
+        dispatch(login());
+
         localStorage.setItem("isLoggedIn", "true");
 
         // Navigate to the login page
@@ -171,8 +175,8 @@ const Signup = ({ setIsLoggedIn }) => {
 };
 
 // PropTypes validation for Signup component
-Signup.propTypes = {
-  setIsLoggedIn: PropTypes.func.isRequired, // Validate that setIsLoggedIn is a required function
-};
+// Signup.propTypes = {
+//   setIsLoggedIn: PropTypes.func.isRequired, // Validate that setIsLoggedIn is a required function
+// };
 
 export default Signup;

@@ -8,7 +8,7 @@ import api from "../../services/api/utils/axiosConfig";
 const initialState = {
   todos: [],
   selectedTodo: null,
-  isLoggedIn: localStorage.getItem("isLoggedIn") === "true" || false, // Get initial login status from localStorage
+  
 };
 
 // Fetch todos from the server

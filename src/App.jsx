@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,20 +12,25 @@ import TodoForm from "./app/todos/components/TodoForm";
 import TodoList from "./app/todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./App/sharedComponent/notFound"; // Import NotFound
+import { useDispatch, useSelector } from "react-redux";
+import { getStatus, login } from "./App/todos/store/AuthSlice";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLogin = useSelector(getStatus);
 
+  const dispatch = useDispatch();
   // Check login status from localStorage
+  
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
-      setIsLoggedIn(true);
+      dispatch(login);
     }
-  }, []);
+  }, [dispatch]);
 
   const ProtectedRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/login" />;
+    return isLogin ? children : <Navigate to="/login" />;
   };
 
   // Add PropType validation for the children prop
@@ -38,11 +43,12 @@ function App() {
       <ToastContainer />
       <Router>
         <Routes>
-          <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+          {/* <Route path="/" element={<Login setIsLoggedIn={isLogin} />} /> */}
+          <Route path="/" element={<Navigate to={isLogin ? "/todo-list" : "/login"} />} />
 
           {/* Public Routes */}
-          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup/>} />
 
           {/* Protected Routes */}
           <Route
