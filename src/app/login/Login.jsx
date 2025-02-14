@@ -105,7 +105,7 @@ const Login = () => {
   // Check login status when the component mounts
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+  });
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
