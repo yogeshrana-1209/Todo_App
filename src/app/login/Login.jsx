@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {  useNavigate } from "react-router-dom"; // Import useNavigate
 // import PropTypes from "prop-types"; // Import PropTypes for validation
 import * as Yup from "yup"; // Import Yup for validation
-// import LogoutButton from "../sharedComponent/logoutButton"; // Import the LogoutButton component
 import { useDispatch } from "react-redux";
 import {login} from "../todos/store/AuthSlice";
 

@@ -68,9 +68,6 @@ function App() {
             }
           />
 
-          {/* Redirect to login if accessing root without logging in */}
-          {/* <Route path="/" element={<Navigate to={isLoggedIn ? "/todo-list" : "/login"} />} /> */}
-
           {/* Catch-all route for undefined paths */}
           <Route path="*" element={<NotFound />} /> {/* Add this route */}
         </Routes>
