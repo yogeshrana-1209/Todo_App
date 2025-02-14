@@ -4,8 +4,6 @@ import {
   setSelectedTodo,
   deleteForm,
   fetchTodos,
-  login,
-  logout,
 } from "../store/TodoSlice";
 import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
@@ -13,11 +11,15 @@ import TodoCard from "./TodoCard"; // Import the TodoCard component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { ToastContainer } from "react-toastify";
 import LoadingSpinner from "../../sharedComponent/loadingSpinner"; // Import the LoadingSpinner
+import { getStatus, logout } from "../store/AuthSlice";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize navigate
+
+  //Get logged in status from Redux
+  const isLoggedIn = useSelector(getStatus);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
@@ -52,11 +54,6 @@ export default function TodoList() {
     navigate("/login"); // Redirect to the login page after logout
   };
 
-  const handleLogin = () => {
-    dispatch(login());
-    navigate("/todo-list"); // Redirect to login page
-  };
-
   useEffect(() => {
     // Set loading to true before fetching data
     setLoading(true);
@@ -80,12 +77,12 @@ export default function TodoList() {
     return () => clearTimeout(timer); // Clean up the timer on unmount
   }, [dispatch]);
 
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
   const handleAddNewTask = () => {
-    dispatch(setSelectedTodo(null)); // Clear the selectedTodo state
-    navigate("/todo-form"); // Navigate to the form for adding a new task
+    if (!isLoggedIn) {
+      navigate("/login"); // Redirect to login if not logged in
+      return;
+    }
+    navigate("/todo-form"); // Redirect to add new task form
   };
 
   return (
@@ -152,7 +149,7 @@ export default function TodoList() {
             </button>
           ) : (
             <button
-              onClick={handleLogin}
+              onClick={() => navigate("/login")}
               className="w-32 py-2 px-4 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
             >
               Login

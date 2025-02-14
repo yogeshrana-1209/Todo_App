@@ -96,15 +96,6 @@ const todoSlice = createSlice({
       state.todos.push(action.payload);
     },
 
-    login: (state) => {
-      state.isLoggedIn = true;
-      localStorage.setItem("isLoggedIn", "true");
-    },
-    logout: (state) => {
-      state.isLoggedIn = false;
-      localStorage.setItem("isLoggedIn", "false");
-    },
-
     updateTodo: (state, action) => {
       const index = state.todos.findIndex(
         (todo) => todo.id === action.payload.id
@@ -125,6 +116,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const { addTodo, updateTodo, login, logout, setSelectedTodo, deleteTodo, setTodos } =
+export const { addTodo, updateTodo, setSelectedTodo, deleteTodo, setTodos } =
   todoSlice.actions;
 export default todoSlice.reducer;
