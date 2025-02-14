@@ -7,6 +7,9 @@ import moment from "moment";
 import * as Yup from "yup"; // Import Yup
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import TodoStatus from "./TodoStatus";
 
 export default function TodoForm() {
   const dispatch = useDispatch();
@@ -62,11 +65,14 @@ export default function TodoForm() {
     setValue,
     reset,
     trigger,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema), // Use Yup validation schema
     mode: "onChange", // Trigger validation on each change
   });
+
+  const selectedStatus = watch("status");
 
   // Get today's date formatted as 'YYYY-MM-DD'
   const today = moment().format("YYYY-MM-DD");
@@ -118,6 +124,10 @@ export default function TodoForm() {
       });
       reset();
     }
+  };
+
+  const handleStatusChange = (status) => {
+    setValue("status", status, { shouldValidate: true });
   };
 
   return (
@@ -211,14 +221,14 @@ export default function TodoForm() {
                 )}
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Status <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <select
                     {...register("status")}
-                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700 appearance-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out bg-white shadow-sm text-gray-700 appearance-none"
                   >
                     <option
                       value=""
@@ -249,6 +259,65 @@ export default function TodoForm() {
                     </svg>
                   </div>
                 </div>
+                {errors.status && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.status.message}
+                  </p>
+                )}
+              </div> */}
+
+              {/* Status Dropdown */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  Status <span className="text-red-500">*</span>
+                </label>
+                <Menu as="div" className="relative w-full">
+                  <MenuButton className="w-full flex justify-between items-center px-4 py-2 text-sm font-semibold text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50">
+                    {selectedStatus ? (
+                      <TodoStatus status={selectedStatus} />
+                    ) : (
+                      "Select a Status"
+                    )}
+                    <ChevronDownIcon
+                      className="w-5 h-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </MenuButton>
+                  <MenuItems className="absolute right-0 z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+                    <div className="py-1">
+                      <MenuItem>
+                        {({ active }) => (
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange("Done")}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            Done
+                          </button>
+                        )}
+                      </MenuItem>
+                      <MenuItem>
+                        {({ active }) => (
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange("Pending")}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            Pending
+                          </button>
+                        )}
+                      </MenuItem>
+                    </div>
+                  </MenuItems>
+                </Menu>
                 {errors.status && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.status.message}

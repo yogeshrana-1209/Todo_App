@@ -27,7 +27,7 @@ export default function TodoList() {
   const [loaderDelay, setLoaderDelay] = useState(false); // For ensuring loader is shown for a minimum time
 
   const handleEdit = (todo) => {
-    navigate(`/todo-form?id=${todo.id}`);
+    navigate('/todo-form');
     dispatch(setSelectedTodo(todo));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
