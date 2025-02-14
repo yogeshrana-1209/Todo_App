@@ -8,7 +8,6 @@ import api from "../../services/api/utils/axiosConfig";
 const initialState = {
   todos: [],
   selectedTodo: null,
-  
 };
 
 // Fetch todos from the server
@@ -89,7 +88,7 @@ const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    
+
     setTodos: (state, action) => {
       state.todos = action.payload;
     },

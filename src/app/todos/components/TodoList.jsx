@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your ConfirmModal component
 import TodoCard from "./TodoCard"; // Import the TodoCard component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { ToastContainer } from "react-toastify";
 import LoadingSpinner from "../../sharedComponent/loadingSpinner"; // Import the LoadingSpinner
 import { getStatus, logout } from "../store/AuthSlice";
 
@@ -17,6 +16,7 @@ export default function TodoList() {
   const todos = useSelector(getTodoList);
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize navigate
+  
 
   //Get logged in status from Redux
   const isLoggedIn = useSelector(getStatus);
@@ -84,6 +84,7 @@ export default function TodoList() {
     }
     navigate("/todo-form"); // Redirect to add new task form
   };
+
 
   return (
     <>
