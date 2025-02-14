@@ -272,7 +272,7 @@ export default function TodoForm() {
                   Status <span className="text-red-500">*</span>
                 </label>
                 <Menu as="div" className="relative w-full">
-                  <MenuButton className="w-full flex justify-between items-center px-4 py-2 text-sm font-semibold text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50">
+                  <MenuButton className="w-full flex justify-between items-center px-4 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50">
                     {selectedStatus ? (
                       <TodoStatus status={selectedStatus} />
                     ) : (
