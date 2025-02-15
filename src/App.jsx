@@ -8,8 +8,8 @@ import {
 import PropTypes from "prop-types";
 import Login from "./App/auth/login/Login";
 import Signup from "./App/auth/signup/Signup";
-import TodoForm from "./app/todos/components/TodoForm";
-import TodoList from "./app/todos/components/TodoList";
+import TodoForm from "./App/todos/components/TodoForm";
+import TodoList from "./App/todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./App/sharedComponent/notFound";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +39,10 @@ function App() {
       <ToastContainer />
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to={isLogin ? "/todo-list" : "/login"} />} />
+          <Route
+            path="/"
+            element={<Navigate to={isLogin ? "/todo-list" : "/login"} />}
+          />
 
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />

@@ -78,6 +78,7 @@ const Login = () => {
         if (userData) {
           dispatch(login(userData));
           localStorage.setItem("isLoggedIn", "true");
+          // localStorage.setItem("user",JSON.stringify({ username: userData.username}));
           navigate("/todo-list");
         } else {
           setLoginError("Invalid username or password. Please try again.");
