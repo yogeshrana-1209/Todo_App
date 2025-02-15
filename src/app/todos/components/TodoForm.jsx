@@ -283,41 +283,23 @@ export default function TodoForm() {
                       aria-hidden="true"
                     />
                   </MenuButton>
+
                   <MenuItems className="absolute right-0 z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg">
                     <div className="py-1">
-                      <MenuItem>
-                        {({ active }) => (
-                          <button
-                            type="button"
-                            onClick={() => handleStatusChange("Done")}
-                            className={`block w-full text-left px-4 py-2 text-sm ${
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700"
-                            }`}
-                          >
-                            Done
-                          </button>
-                        )}
-                      </MenuItem>
-                      <MenuItem>
-                        {({ active }) => (
-                          <button
-                            type="button"
-                            onClick={() => handleStatusChange("Pending")}
-                            className={`block w-full text-left px-4 py-2 text-sm ${
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700"
-                            }`}
-                          >
-                            Pending
-                          </button>
-                        )}
-                      </MenuItem>
+                      {["Done", "Pending"].map((status) => (
+                        <MenuItem
+                          key={status}
+                          as="button"
+                          onClick={() => handleStatusChange(status)}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 text-gray-700"
+                        >
+                          {status}
+                        </MenuItem>
+                      ))}
                     </div>
                   </MenuItems>
                 </Menu>
+
                 {errors.status && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.status.message}

@@ -28,16 +28,18 @@ const Login = () => {
       .required("Password is required"),
   });
 
-  // Function to check if the user is already logged in
+  // Check if the user is already logged in
   useEffect(() => {
     if (localStorage.getItem("isLoggedIn") === "true") {
       navigate("/todo-list");
     }
   }, [navigate]);
 
-  // Handle change of input field (username or password)
+  // Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
+    setLoginError(""); // Clear login error when user types
+
     if (id === "username") {
       setUsername(value);
       validateField("username", value);
@@ -47,7 +49,7 @@ const Login = () => {
     }
   };
 
-  // Validate individual field on change
+  // Validate individual fields
   const validateField = async (fieldName, value) => {
     try {
       await validationSchema.validateAt(fieldName, { [fieldName]: value });
@@ -57,13 +59,12 @@ const Login = () => {
     }
   };
 
-  // Handle login form submission
+  // Handle form submission
   const handleLogin = (e) => {
     e.preventDefault();
     setErrors({});
     setLoginError("");
 
-    // Validate the form data using Yup
     validationSchema
       .validate({ username, password }, { abortEarly: false })
       .then(() => {
@@ -80,8 +81,8 @@ const Login = () => {
           navigate("/todo-list");
         } else {
           setLoginError("Invalid username or password. Please try again.");
-          setUsername("");
-          setPassword("");
+          setUsername(""); // Reset username field
+          setPassword(""); // Reset password field
         }
       })
       .catch((err) => {
@@ -115,7 +116,6 @@ const Login = () => {
                 value={username}
                 onChange={handleChange}
               />
-
               {errors.username && (
                 <div className="text-red-500 text-sm mt-1">
                   {errors.username}
@@ -136,7 +136,6 @@ const Login = () => {
                 value={password}
                 onChange={handleChange}
               />
-
               {errors.password && (
                 <div className="text-red-500 text-sm mt-1">
                   {errors.password}
@@ -144,7 +143,7 @@ const Login = () => {
               )}
             </div>
 
-            {/* Display login error message */}
+            {/* Display login error */}
             {loginError && (
               <div className="text-red-500 text-left text-sm mt-2">
                 {loginError}
@@ -166,7 +165,7 @@ const Login = () => {
           <div className="mt-4 text-center">
             <span className="text-sm text-gray-600">{`Don't have an account? `}</span>
             <button
-              type="button" // FIXED: Changed to "button" to prevent form submission
+              type="button"
               onClick={() => navigate("/signup")}
               className="text-sm text-blue-600 hover:underline"
             >
