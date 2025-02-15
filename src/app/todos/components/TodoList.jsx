@@ -10,7 +10,7 @@ import ConfirmModal from "../../sharedComponent/confirmModal"; // Import your Co
 import TodoCard from "./TodoCard"; // Import the TodoCard component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import LoadingSpinner from "../../sharedComponent/loadingSpinner"; // Import the LoadingSpinner
-import { getStatus, logout } from "../store/AuthSlice";
+import { getStatus, logout } from "../../auth/store/AuthSlice";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);

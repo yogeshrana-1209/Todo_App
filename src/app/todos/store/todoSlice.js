@@ -3,7 +3,7 @@ import {
   SuccessNotify,
   DangerNotify,
 } from "../../sharedComponent/notification";
-import api from "../../services/api/utils/axiosConfig";
+import api from "../../services/api/axiosConfig";
 
 const initialState = {
   todos: [],

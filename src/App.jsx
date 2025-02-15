@@ -6,34 +6,30 @@ import {
   Navigate,
 } from "react-router-dom";
 import PropTypes from "prop-types";
-import Login from "./App/login/Login";
-import Signup from "./App/signup/Signup";
+import Login from "./App/auth/login/Login";
+import Signup from "./App/auth/signup/Signup";
 import TodoForm from "./app/todos/components/TodoForm";
 import TodoList from "./app/todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
-import NotFound from "./App/sharedComponent/notFound"; // Import NotFound
+import NotFound from "./App/sharedComponent/notFound";
 import { useDispatch, useSelector } from "react-redux";
-import { getStatus, login } from "./App/todos/store/AuthSlice";
+import { getStatus, login } from "./App/auth/store/AuthSlice";
 
 function App() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isLogin = useSelector(getStatus);
-
   const dispatch = useDispatch();
-  // Check login status from localStorage
-  
+
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      dispatch(login);
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true" && !isLogin) {
+      dispatch(login());
     }
-  }, [dispatch]);
+  }, [dispatch, isLogin]);
 
   const ProtectedRoute = ({ children }) => {
     return isLogin ? children : <Navigate to="/login" />;
   };
 
-  // Add PropType validation for the children prop
   ProtectedRoute.propTypes = {
     children: PropTypes.node.isRequired,
   };
@@ -43,12 +39,11 @@ function App() {
       <ToastContainer />
       <Router>
         <Routes>
-          {/* <Route path="/" element={<Login setIsLoggedIn={isLogin} />} /> */}
           <Route path="/" element={<Navigate to={isLogin ? "/todo-list" : "/login"} />} />
 
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup/>} />
+          <Route path="/signup" element={<Signup />} />
 
           {/* Protected Routes */}
           <Route
@@ -69,7 +64,7 @@ function App() {
           />
 
           {/* Catch-all route for undefined paths */}
-          <Route path="*" element={<NotFound />} /> {/* Add this route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
