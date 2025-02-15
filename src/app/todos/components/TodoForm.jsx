@@ -1,6 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedTodo, submitForm, updateForm } from "../store/TodoSlice";
+import {
+  getSelectedTodo,
+  setSelectedTodo,
+  submitForm,
+  updateForm,
+} from "../store/TodoSlice";
 import { useEffect } from "react";
 // import { ToastContainer } from "react-toastify";
 import moment from "moment";
@@ -92,10 +97,10 @@ export default function TodoForm() {
       setValue("status", selectedTodo.status || "");
       trigger();
     } else {
-      setValue("date", today);
       reset();
+      dispatch(setSelectedTodo(null));
     }
-  }, [selectedTodo, setValue, reset, trigger, today]);
+  }, [selectedTodo, setValue, reset, trigger, today, dispatch]);
 
   const onSubmit = (data) => {
     if (selectedTodo) {

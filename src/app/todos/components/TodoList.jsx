@@ -27,8 +27,8 @@ export default function TodoList() {
   const [todoToDelete, setTodoToDelete] = useState(null);
 
   const handleEdit = (todo) => {
-    navigate("/todo-form");
     dispatch(setSelectedTodo(todo));
+    navigate("/todo-form");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -60,6 +60,7 @@ export default function TodoList() {
       navigate("/login");
       return;
     }
+    dispatch(setSelectedTodo(null));
     navigate("/todo-form");
   };
 
