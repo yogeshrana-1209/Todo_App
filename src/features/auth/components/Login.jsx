@@ -113,7 +113,7 @@ const Login = () => {
             {/* Username Input */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Username
+                Username <span className="text-red-500">*</span>
               </label>
               <input
                 id="username"
@@ -133,7 +133,7 @@ const Login = () => {
             {/* Password Input */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Password
+                Password <span className="text-red-500">*</span>
               </label>
               <input
                 id="password"

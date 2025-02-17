@@ -135,6 +135,11 @@ export default function TodoForm() {
     setValue("status", status, { shouldValidate: true });
   };
 
+  const handleBack = () => {
+    navigate(-1); // Navigates to the previous page
+  };
+  
+
   return (
     <>
       <div className="flex justify-center text-left mt-[40px] p-5 items-center bg-gradient-to-r from-white-500 via-white-500 to-white-500">
@@ -207,7 +212,9 @@ export default function TodoForm() {
                       {...register("priority")}
                       className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
                     />
-                    <span className="ml-2 text-gray-700 cursor-pointer text-sm">High</span>
+                    <span className="ml-2 text-gray-700 cursor-pointer text-sm">
+                      High
+                    </span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -216,7 +223,9 @@ export default function TodoForm() {
                       {...register("priority")}
                       className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
                     />
-                    <span className="ml-2 text-gray-700 cursor-pointer text-sm">Low</span>
+                    <span className="ml-2 text-gray-700 cursor-pointer text-sm">
+                      Low
+                    </span>
                   </label>
                 </div>
                 {errors.priority && (
@@ -337,6 +346,14 @@ export default function TodoForm() {
                 className="w-full py-3 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
               >
                 {selectedTodo ? "Update Todo" : "Add Todo"}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleBack}
+                className="w-full py-3 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
+              >
+                Back
               </button>
             </div>
           </form>

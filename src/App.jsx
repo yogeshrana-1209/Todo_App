@@ -14,7 +14,6 @@ import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/notFound";
 import { useDispatch, useSelector } from "react-redux";
 import { getStatus, login } from "./features/auth/store/AuthSlice";
-// import Home from "./pages/Home";
 
 function App() {
   const isLogin = useSelector(getStatus);
