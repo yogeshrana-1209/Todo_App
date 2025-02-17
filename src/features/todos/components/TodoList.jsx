@@ -48,7 +48,8 @@ export default function TodoList() {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+
+    if (isLoggedIn && todos.length == 0) {
       dispatch(fetchTodos());
     }
   }, [dispatch, isLoggedIn]);
