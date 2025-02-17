@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../sharedComponent/loadingSpinner";
 import { getStatus } from "../../auth/store/AuthSlice";
 import Navbar from "../../sharedComponent/navbar";
+// import Pagination from "../../sharedComponent/Pagination"; //Import the pagination component
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -25,6 +26,12 @@ export default function TodoList() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
+  // const [currentPage, setCurrentPage] = useState(0);
+
+  // const todosPerPage = 5;
+
+  //Calculate the page count dynamically based on the total number if todos
+  // const pageCount = Math.ceil(todos.length / todosPerPage);
 
   const handleEdit = (todo) => {
     dispatch(setSelectedTodo(todo));
@@ -49,6 +56,12 @@ export default function TodoList() {
     }
   };
 
+  // const handlePageClick = (data) => {
+  //   let selectedPage = data.selected;
+  //   setCurrentPage(selectedPage);
+  // }
+  
+
   useEffect(() => {
     if (isLoggedIn && firstLoad) {
       dispatch(fetchTodos());
@@ -71,7 +84,7 @@ export default function TodoList() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-4">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center m-4">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-5 inline-block border-2 border-blue-600 rounded-2xl bg-blue-50/50 px-8 py-4 shadow-md">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-5 inline-block border-2 border-blue-600 rounded-2xl bg-blue-50/50 px-8 py-2 shadow-md">
               Todo List
             </h1>
           </div>
@@ -105,7 +118,13 @@ export default function TodoList() {
               ))}
             </div>
           )}
+
+          {/* {todos.length > todosPerPage && (
+            <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+          )} */}
         </div>
+
+
 
         <ConfirmModal
           isOpen={isModalOpen}
