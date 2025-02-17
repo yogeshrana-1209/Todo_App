@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   SuccessNotify,
   DangerNotify,
-} from "../../sharedComponent/notification";
-import api from "../../services/api/axiosConfig";
+} from "../../../components/sharedComponent/ui/notification";
+import api from "../../../services/api/axiosConfig";
 
 const initialState = {
   todos: [],

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { getStatus, logout } from "../auth/store/AuthSlice";
+import { getStatus, logout } from "../../features/auth/store/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons for menu
@@ -81,12 +81,12 @@ export default function Navbar() {
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={() => {
-                navigate("/");
+                navigate("/todo-form");
                 setMenuOpen(false);
               }}
               className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
             >
-              Home
+              Go to Form
             </button>
 
             {isLoggedIn ? (

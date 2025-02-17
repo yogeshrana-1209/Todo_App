@@ -6,14 +6,15 @@ import {
   Navigate,
 } from "react-router-dom";
 import PropTypes from "prop-types";
-import Login from "./App/auth/login/Login";
-import Signup from "./App/auth/signup/Signup";
-import TodoForm from "./App/todos/components/TodoForm";
-import TodoList from "./App/todos/components/TodoList";
+import Login from "./features/auth/components/Login";
+import Signup from "./features/auth/components/Signup";
+import TodoForm from "./features/Todos/components/TodoForm";
+import TodoList from "./features/Todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
-import NotFound from "./App/sharedComponent/notFound";
+import NotFound from "./pages/notFound";
 import { useDispatch, useSelector } from "react-redux";
-import { getStatus, login } from "./App/auth/store/AuthSlice";
+import { getStatus, login } from "./features/auth/store/AuthSlice";
+// import Home from "./pages/Home";
 
 function App() {
   const isLogin = useSelector(getStatus);

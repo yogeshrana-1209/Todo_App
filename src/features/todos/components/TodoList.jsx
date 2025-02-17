@@ -8,12 +8,12 @@ import {
   getFirstLoad,
 } from "../store/TodoSlice";
 import { useEffect, useState } from "react";
-import ConfirmModal from "../../sharedComponent/confirmModal";
+import ConfirmModal from "../../../components/sharedComponent/ui/confirmModal";
 import TodoCard from "./TodoCard";
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../../sharedComponent/loadingSpinner";
+import LoadingSpinner from "../../../components/sharedComponent/ui/loadingSpinner";
 import { getStatus } from "../../auth/store/AuthSlice";
-import Navbar from "../../sharedComponent/navbar";
+import Navbar from "../../../components/layout/navbar";
 // import Pagination from "../../sharedComponent/Pagination"; //Import the pagination component
 
 export default function TodoList() {
