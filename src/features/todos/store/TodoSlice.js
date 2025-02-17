@@ -9,14 +9,9 @@ const initialState = {
   todos: [],
   selectedTodo: null,
   loading: false, // Add loading state
-  firstLoad: true, // Track first time loading after login
 };
 
-// Fetch todos from the server
-export const fetchTodos = () => async (dispatch, getState) => {
-  const { firstLoad } = getState().todo;
-  if (!firstLoad) return; // Prevent reloading after first login
-
+export const fetchTodos = () => async (dispatch) => {
   dispatch(setLoading(true)); // Set loading before fetching
 
   try {
@@ -29,7 +24,6 @@ export const fetchTodos = () => async (dispatch, getState) => {
     setTimeout(() => {
       dispatch(setLoading(false)); // Ensure loading stops after 1 second
     }, 1000);
-    dispatch(setFirstLoad(false)); // Mark first load as completed
   }
 };
 
@@ -63,8 +57,6 @@ export const updateForm = (todo) => async (dispatch) => {
 
 // Delete a todo
 export const deleteForm = (id) => async (dispatch) => {
-  console.log("Delete id:", id);
-
   try {
     await api.delete(`/todos/${id}`);
     dispatch(deleteTodo(id));
@@ -78,8 +70,7 @@ export const deleteForm = (id) => async (dispatch) => {
 // Selectors
 export const getTodoList = (state) => state.todo.todos;
 export const getSelectedTodo = (state) => state.todo.selectedTodo;
-export const getTodoLoading = (state) => state.todo.loading; // Selector for loading
-export const getFirstLoad = (state) => state.todo.firstLoad; // Selector for first load
+export const getTodoLoading = (state) => state.todo.loading;
 
 const todoSlice = createSlice({
   name: "todo",
@@ -108,9 +99,6 @@ const todoSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    setFirstLoad: (state, action) => {
-      state.firstLoad = action.payload;
-    },
   },
 });
 
@@ -121,7 +109,6 @@ export const {
   deleteTodo,
   setTodos,
   setLoading,
-  setFirstLoad,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;
