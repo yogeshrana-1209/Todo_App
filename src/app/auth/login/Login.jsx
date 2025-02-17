@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const passwordRef = useRef(null); // Reference for password input field
 
   // Yup validation schema
   const validationSchema = Yup.object({
@@ -84,6 +85,11 @@ const Login = () => {
           setLoginError("Invalid username or password. Please try again.");
           setUsername(""); // Reset username field
           setPassword(""); // Reset password field
+
+          //Blur the password field to remove focus
+          if(passwordRef.current) {
+            passwordRef.current.blur();
+          }
         }
       })
       .catch((err) => {
@@ -136,6 +142,7 @@ const Login = () => {
                 className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                 value={password}
                 onChange={handleChange}
+                ref={passwordRef}
               />
               {errors.password && (
                 <div className="text-red-500 text-sm mt-1">

@@ -4,7 +4,8 @@ import axios from "axios";
 
 // Use the VITE_API_URL from the environment variables
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Automatically reads the environment variable
+   // Automatically reads the environment variable
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000" ,
   headers: {
     "Content-Type": "application/json",
   },
@@ -31,10 +32,13 @@ const axiosInstance = axios.create({
 // }
 
 const api = {
-  get: (url) => axiosInstance.get(url),
-  post: (url, data) => axiosInstance.post(url, data),
-  put: (url, data) => axiosInstance.put(url, data),
-  delete: (url) => axiosInstance.delete(url),
+  get: async (url) => await axiosInstance.get(url),
+  post: async (url, data) => await axiosInstance.post(url, data),
+  put: async (url, data) => await axiosInstance.put(url, data),
+  delete: async (url) => {
+    console.error(url);
+    return await axiosInstance.delete(url)
+  } 
 };
 
 // export default axiosInstance;

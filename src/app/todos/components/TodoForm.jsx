@@ -207,7 +207,7 @@ export default function TodoForm() {
                       {...register("priority")}
                       className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
                     />
-                    <span className="ml-2 text-gray-700 text-sm">High</span>
+                    <span className="ml-2 text-gray-700 cursor-pointer text-sm">High</span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -216,7 +216,7 @@ export default function TodoForm() {
                       {...register("priority")}
                       className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
                     />
-                    <span className="ml-2 text-gray-700 text-sm">Low</span>
+                    <span className="ml-2 text-gray-700 cursor-pointer text-sm">Low</span>
                   </label>
                 </div>
                 {errors.priority && (
