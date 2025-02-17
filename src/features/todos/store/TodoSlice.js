@@ -63,8 +63,8 @@ export const updateForm = (todo) => async (dispatch) => {
 
 // Delete a todo
 export const deleteForm = (id) => async (dispatch) => {
-  console.log("Delete id:",id);
-  
+  console.log("Delete id:", id);
+
   try {
     await api.delete(`/todos/${id}`);
     dispatch(deleteTodo(id));

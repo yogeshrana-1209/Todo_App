@@ -60,7 +60,6 @@ export default function TodoList() {
   //   let selectedPage = data.selected;
   //   setCurrentPage(selectedPage);
   // }
-  
 
   useEffect(() => {
     if (isLoggedIn && firstLoad) {
@@ -123,8 +122,6 @@ export default function TodoList() {
             <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
           )} */}
         </div>
-
-
 
         <ConfirmModal
           isOpen={isModalOpen}

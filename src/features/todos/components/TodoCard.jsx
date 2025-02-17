@@ -26,12 +26,13 @@ const TodoCard = ({ todo, onEdit, onDelete }) => {
           <span className="inline-flex items-center bg-gray-100 px-3 py-1 rounded-full">
             <span className="mr-2">🎯</span>
             <span
-              className={`font-medium ${todo.priority === "high"
-                ? "text-red-600"
-                : todo.priority === "medium"
-                ? "text-yellow-600"
-                : "text-green-600"
-                }`}
+              className={`font-medium ${
+                todo.priority === "high"
+                  ? "text-red-600"
+                  : todo.priority === "medium"
+                  ? "text-yellow-600"
+                  : "text-green-600"
+              }`}
             >
               {todo.priority} Priority
             </span>

@@ -87,7 +87,7 @@ const Login = () => {
           setPassword(""); // Reset password field
 
           //Blur the password field to remove focus
-          if(passwordRef.current) {
+          if (passwordRef.current) {
             passwordRef.current.blur();
           }
         }

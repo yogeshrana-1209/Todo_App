@@ -138,7 +138,6 @@ export default function TodoForm() {
   const handleBack = () => {
     navigate(-1); // Navigates to the previous page
   };
-  
 
   return (
     <>
