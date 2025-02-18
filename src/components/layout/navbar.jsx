@@ -3,6 +3,7 @@ import { getStatus, logout } from "../../features/auth/store/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons for menu
+import todo_logo from "../../../public/assets/images/todo-app-icon.png"; // Import your logo image
 
 export default function Navbar() {
   const isLoggedIn = useSelector(getStatus);
@@ -23,13 +24,14 @@ export default function Navbar() {
       {/* Navbar */}
       <nav className="bg-blue-600 text-white py-4 shadow-md fixed top-0 left-0 w-full z-50">
         <div className="max-w-screen-xl mx-auto px-4 flex justify-between items-center">
-          {/* Logo / App Name */}
-          <h1
-            className="text-xl font-bold cursor-pointer flex-shrink-0"
+          {/* Logo & App Name */}
+          <div
+            className="flex items-center gap-3 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            My Todo App
-          </h1>
+            <img src={todo_logo} alt="Logo" className="h-10 w-10 object-contain" />
+            <h1 className="text-2xl font-bold">Todo App</h1>
+          </div>
 
           {/* Menu Icon for Mobile */}
           <div className="md:hidden">
@@ -52,12 +54,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             {isLoggedIn ? (
               <>
-                <button
+                {/* <button
                   onClick={() => navigate("/todo-form")}
                   className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
                 >
                   Go to TodoForm
-                </button>
+                </button> */}
 
                 <button
                   onClick={handleLogout}

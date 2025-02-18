@@ -66,11 +66,10 @@ const Pagination = ({ pageCount, onPageChange, currentPage, itemsPerPage }) => {
               <button
                 key={index}
                 onClick={() => handlePageChange(index + 1)}
-                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                  currentPage === index + 1
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50'
-                }`}
+                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${currentPage === index + 1
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50'
+                  }`}
               >
                 {index + 1}
               </button>

@@ -342,7 +342,7 @@ export default function TodoForm() {
 
               <button
                 type="submit"
-                className="w-full py-3 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
+                className="w-full py-2 px-3 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
               >
                 {selectedTodo ? "Update Todo" : "Add Todo"}
               </button>
@@ -350,7 +350,7 @@ export default function TodoForm() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-full py-3 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
+                className="w-full py-2 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
               >
                 Back
               </button>
