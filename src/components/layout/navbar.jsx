@@ -3,7 +3,7 @@ import { getStatus, logout } from "../../features/auth/store/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons for menu
-import todo_logo from "../../../public/assets/images/todo-app-icon.png"; // Import your logo image
+import todo_logo from "/assets/images/todo-app-icon.png"; // Import your logo image
 
 export default function Navbar() {
   const isLoggedIn = useSelector(getStatus);

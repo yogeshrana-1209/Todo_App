@@ -28,7 +28,12 @@ export default function TodoList() {
   const itemsPerPage = 8;
 
   const handleEdit = (todo) => {
-    dispatch(setSelectedTodo(todo));
+
+    const fixedTodo = {
+      ...todo,
+      id: Number(todo.id),
+    }
+    dispatch(setSelectedTodo(fixedTodo));
     navigate("/todo-form");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -45,7 +50,8 @@ export default function TodoList() {
 
   const handleDelete = () => {
     if (todoToDelete) {
-      dispatch(deleteForm(todoToDelete.id));
+      const fixedId = Number(todoToDelete.id);
+      dispatch(deleteForm(fixedId));
       closeDeleteModal();
     }
   };
@@ -100,7 +106,7 @@ export default function TodoList() {
           {loading ? (
             <LoadingSpinner />
           ) : currentTodos?.length === 0 ? (
-            <p className="text-center text-xl text-gray-500 font-medium">
+            <p className="text-center text-xl text-gray-500 m-6 p-6 border-4 rounded-xl border-gray-400 border-dashed font-medium">
               No todos yet. Add your first todo!
             </p>
           ) : (
