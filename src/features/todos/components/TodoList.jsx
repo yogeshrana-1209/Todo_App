@@ -48,11 +48,10 @@ export default function TodoList() {
   };
 
   useEffect(() => {
-
-    if (isLoggedIn && todos.length == 0) {
+    if (isLoggedIn && todos.length === 0) {
       dispatch(fetchTodos());
     }
-  }, [dispatch, isLoggedIn]);
+  }, [dispatch, isLoggedIn, todos.length]);
 
   const handleAddNewTask = () => {
     if (!isLoggedIn) {
@@ -68,7 +67,7 @@ export default function TodoList() {
       <Navbar />
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-4">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center m-4">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-5 inline-block border-2 border-blue-600 rounded-2xl bg-blue-50/50 px-8 py-2 shadow-md">
               Todo List
@@ -93,7 +92,7 @@ export default function TodoList() {
               No todos yet. Add your first todo!
             </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
               {todos?.map((todo) => (
                 <TodoCard
                   key={todo.id}

@@ -36,7 +36,7 @@ const api = {
   post: async (url, data) => await axiosInstance.post(url, data),
   put: async (url, data) => await axiosInstance.put(url, data),
   delete: async (url) => {
-    console.error(url);
+    // console.error(url);
     return await axiosInstance.delete(url);
   },
 };

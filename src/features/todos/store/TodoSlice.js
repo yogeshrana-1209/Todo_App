@@ -13,7 +13,6 @@ const initialState = {
 
 export const fetchTodos = () => async (dispatch) => {
   dispatch(setLoading(true)); // Set loading before fetching
-
   try {
     const response = await api.get("/todos");
     dispatch(setTodos(response.data));
