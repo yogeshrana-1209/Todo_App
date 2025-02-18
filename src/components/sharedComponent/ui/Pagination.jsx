@@ -7,7 +7,7 @@ const Pagination = ({ pageCount }) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(getCurrentPage);
   const itemsPerPage = useSelector(getItemsPerPage);
-  
+
   const totalPages = Math.ceil(pageCount / itemsPerPage);
 
   const handlePageChange = (page) => {
@@ -46,7 +46,7 @@ const Pagination = ({ pageCount }) => {
             className={`px-4 py-2 rounded ${currentPage === index + 1
               ? "bg-blue-600 text-white"
               : "bg-gray-100 hover:bg-gray-300"
-            }`}
+              }`}
           >
             {index + 1}
           </button>

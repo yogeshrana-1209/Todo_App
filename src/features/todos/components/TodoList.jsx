@@ -14,7 +14,6 @@ import LoadingSpinner from "../../../components/sharedComponent/ui/loadingSpinne
 import { getStatus } from "../../auth/store/AuthSlice";
 import Navbar from "../../../components/layout/navbar";
 import Pagination from "../../../components/sharedComponent/ui/Pagination";
-import { getCurrentPage,getItemsPerPage,setCurrentPage } from "../../pagination/store/PaginationSlice";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -25,8 +24,8 @@ export default function TodoList() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
-  const currentPage = useSelector(getCurrentPage);
-  const itemsPerPage = useSelector(getItemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const handleEdit = (todo) => {
 
