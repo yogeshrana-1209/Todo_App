@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../../components/sharedComponent/ui/loadingSpinner";
 import { getStatus } from "../../auth/store/AuthSlice";
 import Navbar from "../../../components/layout/navbar";
+import Pagination from "../../../components/sharedComponent/ui/Pagination";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -23,6 +24,8 @@ export default function TodoList() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const handleEdit = (todo) => {
     dispatch(setSelectedTodo(todo));
@@ -62,6 +65,15 @@ export default function TodoList() {
     navigate("/todo-form");
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    console.log("Current page:", page);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTodos = todos.slice(startIndex, endIndex);
+
   return (
     <>
       <Navbar />
@@ -75,7 +87,7 @@ export default function TodoList() {
           </div>
 
           {isLoggedIn && (
-            <div className="flex justify-center m-4 items-center">
+            <div className="flex justify-center m-2 items-center">
               <button
                 onClick={handleAddNewTask}
                 className="w-44 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
@@ -87,13 +99,13 @@ export default function TodoList() {
 
           {loading ? (
             <LoadingSpinner />
-          ) : todos?.length === 0 ? (
+          ) : currentTodos?.length === 0 ? (
             <p className="text-center text-xl text-gray-500 font-medium">
               No todos yet. Add your first todo!
             </p>
           ) : (
             <div className="grid grid-cols-1 p-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-              {todos?.map((todo) => (
+              {currentTodos?.map((todo) => (
                 <TodoCard
                   key={todo.id}
                   todo={todo}
@@ -104,6 +116,13 @@ export default function TodoList() {
             </div>
           )}
         </div>
+
+        <Pagination
+          pageCount={todos.length}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
 
         <ConfirmModal
           isOpen={isModalOpen}

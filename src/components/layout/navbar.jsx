@@ -19,88 +19,79 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-blue-600 text-white py-4 shadow-md">
-      <div className="max-w-screen-xl mx-auto px-4 flex justify-between items-center">
-        {/* Logo / App Name */}
-        <h1
-          className="text-xl font-bold cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          My Todo App
-        </h1>
+    <>
+      {/* Navbar */}
+      <nav className="bg-blue-600 text-white py-4 shadow-md fixed top-0 left-0 w-full z-50">
+        <div className="max-w-screen-xl mx-auto px-4 flex justify-between items-center">
+          {/* Logo / App Name */}
+          <h1
+            className="text-xl font-bold cursor-pointer flex-shrink-0"
+            onClick={() => navigate("/")}
+          >
+            My Todo App
+          </h1>
 
-        {/* Menu Icon for Mobile */}
-        <div className="md:hidden">
-          {menuOpen ? (
-            <FiX
-              size={28}
-              className="cursor-pointer"
-              onClick={() => setMenuOpen(false)}
-            />
-          ) : (
-            <FiMenu
-              size={28}
-              className="cursor-pointer"
-              onClick={() => setMenuOpen(true)}
-            />
-          )}
-        </div>
+          {/* Menu Icon for Mobile */}
+          <div className="md:hidden">
+            {menuOpen ? (
+              <FiX
+                size={28}
+                className="cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              />
+            ) : (
+              <FiMenu
+                size={28}
+                className="cursor-pointer"
+                onClick={() => setMenuOpen(true)}
+              />
+            )}
+          </div>
 
-        {/* Navigation Links - Desktop View */}
-        <div className="hidden md:flex items-center gap-4">
-          {isLoggedIn ? (
-            <>
-              <button
-                onClick={() => navigate("/todo-form")}
-                className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
-              >
-                Go to TodoForm
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Login / Signup
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Menu (Dropdown) */}
-      {menuOpen && (
-        <div className="md:hidden bg-blue-700 mt-2 py-4">
-          <div className="flex flex-col items-center gap-4">
-            <button
-              onClick={() => {
-                navigate("/todo-form");
-                setMenuOpen(false);
-              }}
-              className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
-            >
-              Go to Form
-            </button>
-
+          {/* Navigation Links - Desktop View */}
+          <div className="hidden md:flex items-center gap-4">
             {isLoggedIn ? (
               <>
-                {/* <button
-                  onClick={() => {
-                    navigate("/todo-form");
-                    setMenuOpen(false);
-                  }}
+                <button
+                  onClick={() => navigate("/todo-form")}
                   className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
                 >
                   Go to TodoForm
-                </button> */}
+                </button>
 
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-700 transition"
+              >
+                Login / Signup
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Menu (Dropdown) */}
+        {menuOpen && (
+          <div className="md:hidden bg-blue-700 mt-2 py-4">
+            <div className="flex flex-col items-center gap-4">
+              <button
+                onClick={() => {
+                  navigate("/todo-form");
+                  setMenuOpen(false);
+                }}
+                className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+              >
+                Go to Form
+              </button>
+
+              {isLoggedIn ? (
                 <button
                   onClick={() => {
                     handleLogout();
@@ -110,21 +101,24 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
-              </>
-            ) : (
-              <button
-                onClick={() => {
-                  navigate("/login");
-                  setMenuOpen(false);
-                }}
-                className="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-700 transition"
-              >
-                Login / Signup
-              </button>
-            )}
+              ) : (
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setMenuOpen(false);
+                  }}
+                  className="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                >
+                  Login / Signup
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </nav>
+        )}
+      </nav>
+
+      {/* Fix overlapping by adding padding */}
+      <div className="pt-16"></div>
+    </>
   );
 }
