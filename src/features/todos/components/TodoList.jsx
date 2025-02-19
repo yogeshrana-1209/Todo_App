@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../../components/sharedComponent/ui/loadingSpinner";
 import { getStatus } from "../../auth/store/AuthSlice";
 import Navbar from "../../../components/layout/navbar";
-import Pagination from "../../../components/sharedComponent/ui/Pagination";
+import Pagination from "../../../features/pagination/components/pagination";
+import { getCurrentPage, getItemsPerPage, setCurrentPage } from "../../pagination/store/PaginationSlice";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -21,11 +22,12 @@ export default function TodoList() {
   const navigate = useNavigate();
   const isLoggedIn = useSelector(getStatus);
   const loading = useSelector(getTodoLoading);
+  const currentPage = useSelector(getCurrentPage);
+  const itemsPerPage = useSelector(getItemsPerPage);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+
 
   const handleEdit = (todo) => {
 
@@ -125,8 +127,8 @@ export default function TodoList() {
 
         <Pagination
           pageCount={todos.length}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
+          // currentPage={currentPage}
+          // itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
         />
 

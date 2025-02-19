@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPage, getCurrentPage, getItemsPerPage } from "../../../features/pagination/store/PaginationSlice";
+import { setCurrentPage, getCurrentPage, getItemsPerPage } from "../store/PaginationSlice";
 import PropTypes from "prop-types"; // Import PropTypes
 
 const Pagination = ({ pageCount }) => {
@@ -16,23 +16,24 @@ const Pagination = ({ pageCount }) => {
     }
   };
 
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      dispatch(setCurrentPage(currentPage + 1));
-    }
-  };
+  // const handleNext = () => {
+  //   if (currentPage < totalPages) {
+  //     dispatch(setCurrentPage(currentPage + 1));
+  //   }
+  // };
 
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      dispatch(setCurrentPage(currentPage - 1));
-    }
-  };
+  // const handlePrevious = () => {
+  //   if (currentPage > 1) {
+  //     dispatch(setCurrentPage(currentPage - 1));
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center py-3">
       <nav aria-label="Pagination" className="flex items-center space-x-2">
         <button
-          onClick={handlePrevious}
+          // onClick={handlePrevious}
+          onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
         >
@@ -53,7 +54,8 @@ const Pagination = ({ pageCount }) => {
         ))}
 
         <button
-          onClick={handleNext}
+          // onClick={handleNext}
+          onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
         >
