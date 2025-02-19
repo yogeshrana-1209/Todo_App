@@ -18,18 +18,6 @@ const Pagination = ({ pageCount }) => {
     }
   };
 
-  // const handleNext = () => {
-  //   if (currentPage < totalPages) {
-  //     dispatch(setCurrentPage(currentPage + 1));
-  //   }
-  // };
-
-  // const handlePrevious = () => {
-  //   if (currentPage > 1) {
-  //     dispatch(setCurrentPage(currentPage - 1));
-  //   }
-  // };
-
   return (
     <div className="flex items-center justify-center py-3">
       <nav aria-label="Pagination" className="flex items-center space-x-2">
