@@ -2,6 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPage, getCurrentPage, getItemsPerPage } from "../store/PaginationSlice";
 import PropTypes from "prop-types"; // Import PropTypes
+import { fetchTodos } from "../../todos/store/TodoSlice";
 
 const Pagination = ({ pageCount }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Pagination = ({ pageCount }) => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       dispatch(setCurrentPage(page));
+      dispatch(fetchTodos(page,itemsPerPage)); //Fetch todos for the new page
     }
   };
 

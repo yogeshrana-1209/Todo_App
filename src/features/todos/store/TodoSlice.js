@@ -11,10 +11,10 @@ const initialState = {
   loading: false, // Add loading state
 };
 
-export const fetchTodos = () => async (dispatch) => {
+export const fetchTodos = (page, itemsPerPage) => async (dispatch) => {
   dispatch(setLoading(true)); // Set loading before fetching
   try {
-    const response = await api.get("/todos");
+    const response = await api.get(`/todos?page=${page}&limit=${itemsPerPage}`);
     dispatch(setTodos(response.data));
   } catch (error) {
     console.error(error);
