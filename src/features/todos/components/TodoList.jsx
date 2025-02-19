@@ -62,7 +62,7 @@ export default function TodoList() {
     if (isLoggedIn && (todos.length === 0)) {
       dispatch(fetchTodos(currentPage, itemsPerPage));
     }
-  }, [dispatch, isLoggedIn, todos.length, currentPage, itemsPerPage]);
+  }, [dispatch, isLoggedIn, todos.length, currentPage, itemsPerPage]);  
 
   const handleAddNewTask = () => {
     if (!isLoggedIn) {
