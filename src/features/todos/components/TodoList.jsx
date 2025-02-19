@@ -14,7 +14,7 @@ import LoadingSpinner from "../../../components/sharedComponent/ui/loadingSpinne
 import { getStatus } from "../../auth/store/AuthSlice";
 import Navbar from "../../../components/layout/navbar";
 import Pagination from "../../../features/pagination/components/pagination";
-import { getCurrentPage, getItemsPerPage, setCurrentPage } from "../../pagination/store/PaginationSlice";
+import { getCurrentPage, getItemsPerPage } from "../../pagination/store/PaginationSlice";
 
 export default function TodoList() {
   const todos = useSelector(getTodoList);
@@ -59,10 +59,10 @@ export default function TodoList() {
   };
 
   useEffect(() => {
-    if (isLoggedIn && todos.length === 0) {
-      dispatch(fetchTodos());
+    if (isLoggedIn && (todos.length === 0)) {
+      dispatch(fetchTodos(currentPage, itemsPerPage));
     }
-  }, [dispatch, isLoggedIn, todos.length]);
+  }, [dispatch, isLoggedIn, todos.length, currentPage, itemsPerPage]);
 
   const handleAddNewTask = () => {
     if (!isLoggedIn) {
@@ -71,11 +71,6 @@ export default function TodoList() {
     }
     dispatch(setSelectedTodo(null));
     navigate("/todo-form");
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    console.log("Current page:", page);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -127,9 +122,7 @@ export default function TodoList() {
 
         <Pagination
           pageCount={todos.length}
-          // currentPage={currentPage}
-          // itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
+        // pageCount={Math.ceil(todos.length / itemsPerPage)}  // another approach to access pagination
         />
 
         <ConfirmModal
