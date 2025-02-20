@@ -34,9 +34,9 @@ export default function TodoList() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      dispatch(fetchTodos(currentPage, itemsPerPage, searchTerm));
+      dispatch(fetchTodos( currentPage, itemsPerPage, searchTerm ));
     }
-  }, [dispatch, isLoggedIn, todos.length, currentPage, itemsPerPage, searchTerm]);
+  }, [dispatch, isLoggedIn, currentPage, itemsPerPage, searchTerm]);
 
   const handleEdit = (todo) => {
     const fixedTodo = {
@@ -78,16 +78,16 @@ export default function TodoList() {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     dispatch(changeSearchTerm(value));
-    dispatch(fetchTodos(1, itemsPerPage, value));
+    // dispatch(fetchTodos(1, itemsPerPage, value));
   }
 
-  const filteredTodos = todos.filter((todo) =>
-    todo.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredTodos = todos.filter((todo) =>
+  //   todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentTodos = filteredTodos.slice(startIndex, endIndex);
+  const currentTodos = todos.slice(startIndex, endIndex);
 
 
   return (
@@ -172,8 +172,8 @@ export default function TodoList() {
         </div>
 
         <Pagination
-          // pageCount={todos.length}
-          pageCount={(Math.ceil(filteredTodos.length / itemsPerPage))}
+          pageCount={todos.length}
+          // pageCount={(Math.ceil(filteredTodos.length / itemsPerPage))}
         // pageCount={Math.ceil(todos.length / itemsPerPage)}  // another approach to access pagination
         />
 
