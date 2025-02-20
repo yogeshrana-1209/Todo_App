@@ -6,6 +6,7 @@ import {
   fetchTodos,
   getTodoLoading,
   changeSearchTerm,
+  getSearchTerm,
 } from "../store/TodoSlice";
 import { useEffect, useState } from "react";
 import ConfirmModal from "../../../components/sharedComponent/ui/confirmModal";
@@ -17,6 +18,7 @@ import Navbar from "../../../components/layout/navbar";
 import Pagination from "../../../features/pagination/components/pagination";
 import { getCurrentPage, getItemsPerPage } from "../../pagination/store/PaginationSlice";
 
+
 export default function TodoList() {
   const todos = useSelector(getTodoList);
   const dispatch = useDispatch();
@@ -25,13 +27,18 @@ export default function TodoList() {
   const loading = useSelector(getTodoLoading);
   const currentPage = useSelector(getCurrentPage);
   const itemsPerPage = useSelector(getItemsPerPage);
+  const searchTerm = useSelector(getSearchTerm);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState(null);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchTodos(currentPage, itemsPerPage, searchTerm));
+    }
+  }, [dispatch, isLoggedIn, todos.length, currentPage, itemsPerPage, searchTerm]);
 
   const handleEdit = (todo) => {
-
     const fixedTodo = {
       ...todo,
       id: Number(todo.id),
@@ -59,12 +66,6 @@ export default function TodoList() {
     }
   };
 
-  useEffect(() => {
-    if (isLoggedIn && (todos.length === 0)) {
-      dispatch(fetchTodos(currentPage, itemsPerPage));
-    }
-  }, [dispatch, isLoggedIn, todos.length, currentPage, itemsPerPage]);
-
   const handleAddNewTask = () => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -74,13 +75,20 @@ export default function TodoList() {
     navigate("/todo-form");
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    dispatch(changeSearchTerm(value));
+    dispatch(fetchTodos(1, itemsPerPage, value));
+  }
+
+  const filteredTodos = todos.filter((todo) =>
+    todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentTodos = todos.slice(startIndex, endIndex);
+  const currentTodos = filteredTodos.slice(startIndex, endIndex);
 
-  const handleSearchChange = (e) => {
-    dispatch(changeSearchTerm(e.target.value));
-  }
 
   return (
     <>
@@ -105,7 +113,7 @@ export default function TodoList() {
             </div>
           )}
 
-          <div className="mb-6 mt-4 max-w-2xl mx-auto">
+          <div className="mb-6 pt-6 max-w-2xl mx-auto">
             <label
               htmlFor="search-input"
               className="block mb-2 px-1 text-base font-semibold text-gray-700"
@@ -164,7 +172,8 @@ export default function TodoList() {
         </div>
 
         <Pagination
-          pageCount={todos.length}
+          // pageCount={todos.length}
+          pageCount={(Math.ceil(filteredTodos.length / itemsPerPage))}
         // pageCount={Math.ceil(todos.length / itemsPerPage)}  // another approach to access pagination
         />
 
