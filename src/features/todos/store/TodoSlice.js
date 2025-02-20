@@ -21,7 +21,7 @@ export const fetchTodos =
         `/todos?page=${page}&limit=${itemsPerPage}&q=${searchTerm}`
       );
       dispatch(setTodos(response.data));
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error(error);
       DangerNotify("Failed to fetch todos");
