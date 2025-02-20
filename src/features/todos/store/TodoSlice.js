@@ -9,6 +9,7 @@ const initialState = {
   todos: [],
   selectedTodo: null,
   loading: false, // Add loading state
+  searchTerm : '',
 };
 
 export const fetchTodos = (page, itemsPerPage) => async (dispatch) => {
@@ -98,6 +99,9 @@ const todoSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    changeSearchTerm : (state,action) => {
+        state.searchTerm = action.payload;
+    }
   },
 });
 
@@ -108,6 +112,7 @@ export const {
   deleteTodo,
   setTodos,
   setLoading,
+  changeSearchTerm,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

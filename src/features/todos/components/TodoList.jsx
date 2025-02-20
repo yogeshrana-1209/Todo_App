@@ -5,6 +5,7 @@ import {
   deleteForm,
   fetchTodos,
   getTodoLoading,
+  changeSearchTerm,
 } from "../store/TodoSlice";
 import { useEffect, useState } from "react";
 import ConfirmModal from "../../../components/sharedComponent/ui/confirmModal";
@@ -77,6 +78,10 @@ export default function TodoList() {
   const endIndex = startIndex + itemsPerPage;
   const currentTodos = todos.slice(startIndex, endIndex);
 
+  const handleSearchChange = (e) => {
+    dispatch(changeSearchTerm(e.target.value));
+  }
+
   return (
     <>
       <Navbar />
@@ -112,6 +117,7 @@ export default function TodoList() {
                 type="text"
                 id="search-input"
                 placeholder="Search for todos..."
+                onChange={handleSearchChange}
                 className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg 
                  text-gray-700 text-base
                  shadow-sm transition duration-150 ease-in-out
