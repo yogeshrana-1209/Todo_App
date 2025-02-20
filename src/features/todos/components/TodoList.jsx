@@ -78,7 +78,12 @@ export default function TodoList() {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     dispatch(changeSearchTerm(value));
+    // dispatch(fetchTodos(1, itemsPerPage, value));
   }
+
+  // const filteredTodos = todos.filter((todo) =>
+  //   todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
