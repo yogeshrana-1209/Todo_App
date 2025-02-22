@@ -62,6 +62,13 @@ export default function Navbar() {
                 </button> */}
 
                 <button
+                  onClick={() => navigate("/album")}
+                  className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+                >
+                  Album
+                </button>
+
+                <button
                   onClick={handleLogout}
                   className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 transition"
                 >
@@ -83,6 +90,17 @@ export default function Navbar() {
         {menuOpen && (
           <div className="md:hidden bg-blue-700 mt-2 py-4">
             <div className="flex flex-col items-center gap-4">
+
+              <button
+                onClick={() => {
+                  navigate("/album");
+                  setMenuOpen(false);
+                }}
+                className="bg-purple-500 px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+              >
+                Album
+              </button>
+
               <button
                 onClick={() => {
                   navigate("/todo-form");
