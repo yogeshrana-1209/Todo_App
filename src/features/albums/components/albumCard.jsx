@@ -1,9 +1,24 @@
+import PropTypes from "prop-types";
 
-export default function AlbumCard() {
+const AlbumCard = ({ album }) => {
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">Album Page</h1>
-      <p>Welcome to the Album page. Here you can showcase your albums.</p>
+    <div className="border rounded-lg p-4 shadow-md">
+      <img
+        src={album.thumbnailUrl}
+        alt={album.title}
+        className="w-full h-32 object-cover rounded"
+      />
+      <h3 className="text-sm font-semibold mt-2">{album.title}</h3>
     </div>
   );
-}
+};
+
+// **PropTypes Validation**
+AlbumCard.propTypes = {
+  album: PropTypes.shape({
+    thumbnailUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default AlbumCard;

@@ -11,6 +11,12 @@ const axiosInstance = axios.create({
   },
 });
 
+const axiosInstanceAlbum = axios.create({
+  baseURL: import.meta.env.VITE_ALBUM_API_URL || "https://jsonplaceholder.typicode.com",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 // //GET request function
 // export const getRequest = (url) => {
 //   return axiosInstance.get(url);
@@ -31,6 +37,10 @@ const axiosInstance = axios.create({
 //   return await axiosInstance.delete(id);
 // }
 
+const apiAlbum = {
+  get: async (url) => await axiosInstanceAlbum.get(url),
+}
+
 const api = {
   get: async (url) => await axiosInstance.get(url),
   post: async (url, data) => await axiosInstance.post(url, data),
@@ -43,3 +53,5 @@ const api = {
 
 // export default axiosInstance;
 export default api;
+
+export { apiAlbum };

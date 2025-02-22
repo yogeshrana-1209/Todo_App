@@ -14,7 +14,8 @@ import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/notFound";
 import { useDispatch, useSelector } from "react-redux";
 import { getStatus, login } from "./features/auth/store/AuthSlice";
-import AlbumCard from "./features/albums/components/albumCard";
+// import AlbumCard from "./features/albums/components/albumCard";
+import Albums from "./features/albums/components/albums";
 
 function App() {
   const isLogin = useSelector(getStatus);
@@ -71,7 +72,7 @@ function App() {
             path="/album"
             element={
               <ProtectedRoute>
-                <AlbumCard />
+                <Albums />
               </ProtectedRoute>
             }
           />
