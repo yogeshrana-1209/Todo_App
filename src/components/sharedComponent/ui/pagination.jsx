@@ -1,21 +1,20 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPage, getCurrentPage, getItemsPerPage } from "../store/PaginationSlice";
+import { setCurrentPage, getCurrentPage, getItemsPerPage } from "../../../features/todos/store/TodoSlice";
 import PropTypes from "prop-types"; // Import PropTypes
-import { fetchTodos, getSearchTerm } from "../../todos/store/TodoSlice";
+// import { fetchTodos } from "../../../features/todos/store/TodoSlice";
 
 const Pagination = ({ pageCount }) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(getCurrentPage);
   const itemsPerPage = useSelector(getItemsPerPage);
-  const searchTerm = useSelector(getSearchTerm);
 
   const totalPages = Math.ceil(pageCount / itemsPerPage);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       dispatch(setCurrentPage(page));
-      dispatch(fetchTodos(page, itemsPerPage, searchTerm)); //Fetch todos for the new page
+      // dispatch(fetchTodos(page, itemsPerPage)); //Fetch todos for the new page
     }
   };
 

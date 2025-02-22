@@ -9,28 +9,25 @@ const initialState = {
   todos: [],
   selectedTodo: null,
   loading: false, // Add loading state
-  searchTerm: "",
+  currentPage: 1,
+  itemsPerPage: 5,
 };
 
-export const fetchTodos =
-  (page, itemsPerPage, searchTerm = "") =>
-  async (dispatch) => {
-    dispatch(setLoading(true)); // Set loading before fetching
-    try {
-      const response = await api.get(
-        `/todos?page=${page}&limit=${itemsPerPage}&q=${searchTerm}`
-      );
-      dispatch(setTodos(response.data));
-      // console.log(response);
-    } catch (error) {
-      console.error(error);
-      DangerNotify("Failed to fetch todos");
-    } finally {
-      setTimeout(() => {
-        dispatch(setLoading(false)); // Ensure loading stops after 1 second
-      }, 1000);
-    }
-  };
+export const fetchTodos = (page, itemsPerPage) => async (dispatch) => {
+  dispatch(setLoading(true)); // Set loading before fetching
+  try {
+    const response = await api.get(`/todos?page=${page}&limit=${itemsPerPage}`);
+    dispatch(setTodos(response.data));
+    // console.log(response);
+  } catch (error) {
+    console.error(error);
+    DangerNotify("Failed to fetch todos");
+  } finally {
+    setTimeout(() => {
+      dispatch(setLoading(false)); // Ensure loading stops after 1 second
+    }, 1000);
+  }
+};
 
 // Add a new todo
 export const submitForm = (requestedData) => async (dispatch) => {
@@ -76,7 +73,8 @@ export const deleteForm = (id) => async (dispatch) => {
 export const getTodoList = (state) => state.todo.todos;
 export const getSelectedTodo = (state) => state.todo.selectedTodo;
 export const getTodoLoading = (state) => state.todo.loading;
-export const getSearchTerm = (state) => state.todo.searchTerm;
+export const getCurrentPage = (state) => state.todo.currentPage;
+export const getItemsPerPage = (state) => state.todo.itemsPerPage;
 
 const todoSlice = createSlice({
   name: "todo",
@@ -105,8 +103,11 @@ const todoSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    changeSearchTerm: (state, action) => {
-      state.searchTerm = action.payload;
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+    setItemsPerPage: (state, action) => {
+      state.itemsPerPage = action.payload;
     },
   },
 });
@@ -118,7 +119,8 @@ export const {
   deleteTodo,
   setTodos,
   setLoading,
-  changeSearchTerm,
+  setCurrentPage,
+  setItemsPerPage,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

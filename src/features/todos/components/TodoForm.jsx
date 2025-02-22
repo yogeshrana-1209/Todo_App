@@ -15,6 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import TodoStatus from "./TodoStatus";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 export default function TodoForm() {
   const dispatch = useDispatch();
@@ -36,10 +37,8 @@ export default function TodoForm() {
       .required("Description is required")
       .trim() // This removes any extra spaces around the description
       .matches(/^(?!\s*$).+/, "Description cannot be empty or spaces")
-      .matches(
-        /^[A-Za-z\s]+$/, // Updated regex: allows only alphabetic characters and spaces (no numbers)
-        "Description cannot contain special characters or consecutive spaces"
-      ),
+      // .min(20, 'Description must be at least 20 characters')
+      .max(500, 'Description cannot exceed 500 characters'),
 
     date: Yup.date()
       .required("Date is required")
@@ -143,6 +142,16 @@ export default function TodoForm() {
     <>
       <div className="flex justify-center text-left mt-[40px] p-5 items-center bg-gradient-to-r from-white-500 via-white-500 to-white-500">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="flex items-center text-blue-600 hover:text-blue-800 font-semibold mb-4"
+          >
+            <ArrowLeftIcon className="w-5 h-5 mr-2" /> {/* Icon with spacing */}
+            Back
+          </button>
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <h2 className="text-3xl font-semibold text-center text-gray-800">
               {selectedTodo ? "Update Todo" : "Add Todo"}
@@ -377,13 +386,6 @@ export default function TodoForm() {
                 {selectedTodo ? "Update Todo" : "Add Todo"}
               </button>
 
-              <button
-                type="button"
-                onClick={handleBack}
-                className="w-full py-2 px-4 border-blue-800 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold"
-              >
-                Back
-              </button>
             </div>
           </form>
         </div>

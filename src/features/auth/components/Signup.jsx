@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-// import { useDispatch } from "react-redux";
-// import { login } from "../store/AuthSlice";
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -39,13 +37,7 @@ const Signup = () => {
         const users = JSON.parse(localStorage.getItem("users")) || [];
         users.push(newUser);
         localStorage.setItem("users", JSON.stringify(users));
-
-        // Dispatch login action
-        // dispatch(login());
-        // localStorage.setItem("isLoggedIn", "true");
-
-        // Navigate to the login page
-        navigate("/login");
+        navigate("/todo-list");
       })
       .catch((err) => {
         const formErrors = {};
