@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAlbums, setPage, getCurrentPage, getAlbumList } from "../store/AlbumSlice";
+import { fetchAlbums, setPage, getCurrentPage, getAlbumList, getMaxRecords, getLimit } from "../store/AlbumSlice";
 import AlbumList from "./albumList";
 import { useEffect } from "react";
-
-const MAX_RECORDS = 10;
-// const LIMIT = 10;
-// const TOTAL_PAGES = MAX_RECORDS / LIMIT; //Maximum pages (100 records / 10 records per page)
 
 const Albums = () => {
   const dispatch = useDispatch();
   const albums = useSelector(getAlbumList);
   const page = useSelector(getCurrentPage);
+  const limit = useSelector(getLimit);
+  const maxRecords = useSelector(getMaxRecords);
+
+  const totalPages = Math.ceil(maxRecords / limit);
 
   useEffect(() => {
     dispatch(fetchAlbums(page));
@@ -30,11 +30,11 @@ const Albums = () => {
         >
           Previous
         </button>
-        <span className="mt-2">Page {page} of {MAX_RECORDS}</span>
+        <span className="mt-2">Page {page} of {totalPages}</span>
         <button
           className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
           onClick={() => dispatch(setPage(page + 1))}
-          disabled={page >= MAX_RECORDS}
+          disabled={page >= totalPages}
         >
           Next
         </button>

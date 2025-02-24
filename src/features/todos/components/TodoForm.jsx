@@ -135,7 +135,7 @@ export default function TodoForm() {
   };
 
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
+    navigate('/todo-list'); // Navigates to the previous page
   };
 
   return (
