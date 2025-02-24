@@ -61,129 +61,129 @@ const Login = () => {
   };
 
   // Handle form submission
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setErrors({});
     setLoginError("");
 
-    validationSchema
-      .validate({ username, password }, { abortEarly: false })
-      .then(() => {
-        const users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      await validationSchema
+        .validate({ username, password }, { abortEarly: false })
+        
+          const users = JSON.parse(localStorage.getItem("users")) || [];
 
-        // Check if user exists
-        const userData = users.find(
-          (user) => user.username === username && user.password === password
-        );
+          // Check if user exists
+          const userData = users.find(
+            (user) => user.username === username && user.password === password
+          );
 
-        if (userData) {
-          dispatch(login(userData));
-          localStorage.setItem("isLoggedIn", "true");
-          // localStorage.setItem("user",JSON.stringify({ username: userData.username}));
-          navigate("/todo-list");
-        } else {
-          setLoginError("Invalid username or password. Please try again.");
-          setUsername(""); // Reset username field
-          setPassword(""); // Reset password field
+          if (userData) {
+            dispatch(login(userData));
+            localStorage.setItem("isLoggedIn", "true");
+            // localStorage.setItem("user",JSON.stringify({ username: userData.username}));
+            navigate("/todo-list");
+          } else {
+            setLoginError("Invalid username or password. Please try again.");
+            setUsername(""); // Reset username field
+            setPassword(""); // Reset password field
 
-          //Blur the password field to remove focus
-          if (passwordRef.current) {
-            passwordRef.current.blur();
+            //Blur the password field to remove focus
+            if (passwordRef.current) {
+              passwordRef.current.blur();
+            }
           }
-        }
-      })
-      .catch((err) => {
-        const formErrors = {};
-        err.inner.forEach((e) => {
-          formErrors[e.path] = e.message;
-        });
-        setErrors(formErrors);
-      });
-  };
+        }catch(err) {
+          const formErrors = {};
+          err.inner.forEach((e) => {
+            formErrors[e.path] = e.message;
+          });
+          setErrors(formErrors);
+        };
+    };
 
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md m-[20px] bg-white p-8 rounded-xl shadow-lg space-y-6">
-        <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
-          Login
-        </h2>
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <div className="w-full max-w-md m-[20px] bg-white p-8 rounded-xl shadow-lg space-y-6">
+          <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
+            Login
+          </h2>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-6">
-            {/* Username Input */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Username <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
-                value={username}
-                onChange={handleChange}
-              />
-              {errors.username && (
-                <div className="text-red-500 text-sm mt-1">
-                  {errors.username}
-                </div>
-              )}
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
-                value={password}
-                onChange={handleChange}
-                ref={passwordRef}
-              />
-              {errors.password && (
-                <div className="text-red-500 text-sm mt-1">
-                  {errors.password}
-                </div>
-              )}
-            </div>
-
-            {/* Display login error */}
-            {loginError && (
-              <div className="text-red-500 text-left text-sm mt-2">
-                {loginError}
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-6">
+              {/* Username Input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Username <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
+                  value={username}
+                  onChange={handleChange}
+                />
+                {errors.username && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {errors.username}
+                  </div>
+                )}
               </div>
-            )}
 
-            {/* Login Button */}
-            <div className="mt-6">
+              {/* Password Input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
+                  value={password}
+                  onChange={handleChange}
+                  ref={passwordRef}
+                />
+                {errors.password && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {errors.password}
+                  </div>
+                )}
+              </div>
+
+              {/* Display login error */}
+              {loginError && (
+                <div className="text-red-500 text-left text-sm mt-2">
+                  {loginError}
+                </div>
+              )}
+
+              {/* Login Button */}
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+
+            {/* Signup Navigation */}
+            <div className="mt-4 text-center">
+              <span className="text-sm text-gray-600">{`Don't have an account? `}</span>
               <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                type="button"
+                onClick={() => navigate("/signup")}
+                className="text-sm text-blue-600 hover:underline"
               >
-                Login
+                Sign up here
               </button>
             </div>
-          </div>
-
-          {/* Signup Navigation */}
-          <div className="mt-4 text-center">
-            <span className="text-sm text-gray-600">{`Don't have an account? `}</span>
-            <button
-              type="button"
-              onClick={() => navigate("/signup")}
-              className="text-sm text-blue-600 hover:underline"
-            >
-              Sign up here
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default Login;
+  export default Login;

@@ -32,7 +32,7 @@
       "agreed": true,
       "status": "Done",
       "priority": "low",
-      "date": "2025-02-19T18:30:00.000Z",
+      "date": "2025-02-26T18:30:00.000Z",
       "description": "fsdf",
       "name": "asdasd"
     },
@@ -206,15 +206,6 @@
       "date": "2025-02-26T18:30:00.000Z",
       "description": "gsdg",
       "name": "fasf"
-    },
-    {
-      "id": "1740388525549",
-      "agreed": true,
-      "status": "Done",
-      "priority": "low",
-      "date": "2025-02-26T18:30:00.000Z",
-      "description": "gsd",
-      "name": "gsdg"
     }
   ]
 }

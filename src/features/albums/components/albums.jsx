@@ -18,7 +18,7 @@ const Albums = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Albums</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center">Albums List</h1>
       <AlbumList albums={albums} />
 
       {/* Pagination Controls */}
