@@ -4,7 +4,7 @@ import { apiAlbum } from "../../../services/api/axiosConfig";
 const initialState = {
   albums: [],
   page: 1,
-  limit: 10,
+  limit: 5,
   maxRecords: 100,
   searchTerm: "",
 };
