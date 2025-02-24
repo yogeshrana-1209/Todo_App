@@ -7,7 +7,7 @@ export const store = configureStore({
   reducer: {
     todo: todoReducer, // Ensure the key matches the name of the slice
     auth: authReducer,
-    albums: albumReducer,
+    album: albumReducer,
   },
 });
 
