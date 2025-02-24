@@ -70,7 +70,13 @@ const albumSlice = createSlice({
   },
 });
 
-export const { setAlbums, setPage, setLimit, setMaxRecords, resetPage, setSearchTerm } =
-  albumSlice.actions;
+export const {
+  setAlbums,
+  setPage,
+  setLimit,
+  setMaxRecords,
+  resetPage,
+  setSearchTerm,
+} = albumSlice.actions;
 
 export default albumSlice.reducer;
