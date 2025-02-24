@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAlbums, setPage, getCurrentPage, getAlbumList, getMaxRecords, getLimit } from "../store/AlbumSlice";
+import { fetchAlbums, setPage, setSearchTerm, getCurrentPage, getAlbumList, getMaxRecords, getLimit, resetPage, getSearchTerm } from "../store/AlbumSlice";
 import AlbumList from "./albumList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import debounce from "lodash.debounce";
 
 const Albums = () => {
   const dispatch = useDispatch();
@@ -9,12 +10,28 @@ const Albums = () => {
   const page = useSelector(getCurrentPage);
   const limit = useSelector(getLimit);
   const maxRecords = useSelector(getMaxRecords);
+  const searchTerm = useSelector(getSearchTerm);
 
   const totalPages = Math.ceil(maxRecords / limit);
+  const [searchText, setSearchText] = useState(searchTerm);
 
   useEffect(() => {
-    dispatch(fetchAlbums(page));
-  }, [dispatch, page]);
+    dispatch(resetPage());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAlbums(page, searchTerm));
+  }, [dispatch, page, searchTerm]);
+
+  const handleSearch = debounce((value) => {
+    dispatch(setSearchTerm(value));
+    dispatch(setPage(1));
+  }, 500);
+
+  const onSearchChange = (e) => {
+    setSearchText(e.target.value);
+    handleSearch(e.target.value);
+  };
 
   // const getPageNumbers = () => {
   //   const pages = [];
@@ -49,6 +66,18 @@ const Albums = () => {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4 text-center">Albums List</h1>
+
+      {/* Search Bar  */}
+      <div className="mb-4 flex justify-center">
+        <input
+          type="text"
+          value={searchText}
+          onChange={onSearchChange}
+          placeholder="Search Albums"
+          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+        />
+      </div>
+
       <AlbumList albums={albums} />
 
       {/* Pagination Controls */}
