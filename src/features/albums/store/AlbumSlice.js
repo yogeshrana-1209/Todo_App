@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiAlbum } from "../../../services/api/axiosConfig";
 
-// const MAX_RECORDS = 100;
-// const LIMIT = 10;
-
 const initialState = {
   albums: [],
   page: 1,

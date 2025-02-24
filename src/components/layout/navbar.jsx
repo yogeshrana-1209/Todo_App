@@ -96,7 +96,7 @@ export default function Navbar() {
                   navigate("/album");
                   setMenuOpen(false);
                 }}
-                className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
               >
                 Album
               </button>
