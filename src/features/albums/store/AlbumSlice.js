@@ -26,13 +26,11 @@ export const fetchAlbums = (page) => async (dispatch, getState) => {
     dispatch(setAlbums(response.data));
 
     const totalRecords = response.headers["x-total-count"];
-    console.log("Total Records: ", totalRecords);
+    // console.log("Total Records: ", totalRecords);
 
     if (totalRecords) {
-      const data = dispatch(
-        setMaxRecords(Math.min(parseInt(totalRecords), 100))
-      );
-      console.log("Max Records: ", data);
+      dispatch(setMaxRecords(Math.min(parseInt(totalRecords), 100)));
+      // console.log("Max Records: ", data);
     }
   } catch (error) {
     console.error("Something went wrong in API", error);
