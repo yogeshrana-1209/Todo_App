@@ -14,7 +14,7 @@ const Albums = () => {
   const searchTerm = useSelector(getSearchTerm);
 
   const totalPages = maxRecords > 0 ? Math.ceil(maxRecords / limit) : 1;
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(searchTerm);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const Albums = () => {
   }, [handleSearch]);
 
   const onSearchChange = (e) => {
-    const value = e.target.value.trimStart();
+    const value = e.target.value;
     setSearchText(value);
 
     if (value === "") {
@@ -153,7 +153,7 @@ const Albums = () => {
 
       {/* Display Album List */}
       {albums.length > 0 ? (
-        <AlbumList albums={albums}/>
+        <AlbumList albums={albums} />
       ) : (
         !error && !searchTerm && <p className="text-center text-gray-500">No albums found.</p>
       )}
