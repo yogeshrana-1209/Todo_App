@@ -4,7 +4,7 @@ import { apiAlbum } from "../../../services/api/axiosConfig";
 const initialState = {
   albums: [],
   page: 1,
-  limit: 5,
+  limit: 10,
   maxRecords: 100,
   searchTerm: "",
 };
@@ -13,13 +13,7 @@ export const fetchAlbums =
   (page, searchTerm = "") =>
   async (dispatch, getState) => {
     try {
-      const { limit, maxRecords } = getState().album;
-
-      if (page > Math.ceil(maxRecords / limit)) {
-        console.warn("No more records to fetch.");
-        return;
-      }
-
+      const { limit } = getState().album;
       const searchQuery = searchTerm ? `&q=${searchTerm}` : "";
 
       const response = await apiAlbum.get(
@@ -28,11 +22,12 @@ export const fetchAlbums =
       dispatch(setAlbums(response.data));
 
       const totalRecords = response.headers["x-total-count"];
-      // console.log("Total Records: ", totalRecords);
+      // console.log(("Total Records: ", totalRecords));
 
-      if (totalRecords) {
-        dispatch(setMaxRecords(Math.min(parseInt(totalRecords), 100)));
-        // console.log("Max Records: ", data);
+      if (totalRecords && !isNaN(totalRecords)) {
+        dispatch(setMaxRecords(parseInt(totalRecords, 10)));
+      } else {
+        dispatch(setMaxRecords(0));
       }
     } catch (error) {
       console.error("Something went wrong in API", error);
@@ -57,15 +52,20 @@ const albumSlice = createSlice({
     },
     setLimit: (state, action) => {
       state.limit = action.payload;
+      state.maxRecords = 0;
     },
     setMaxRecords: (state, action) => {
+      console.log("Max Records: ", action.payload);
       state.maxRecords = action.payload;
     },
     resetPage: (state) => {
       state.page = 1;
+      state.maxRecords = 0;
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
+      state.page = 1;
+      state.maxRecords = 0;
     },
   },
 });

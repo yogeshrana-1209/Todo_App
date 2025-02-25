@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAlbums, setPage, setSearchTerm, getCurrentPage, getAlbumList, getMaxRecords, getLimit, resetPage, getSearchTerm } from "../store/AlbumSlice";
 import AlbumList from "./albumList";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import debounce from "lodash.debounce";
 
 const Albums = () => {
@@ -12,10 +12,12 @@ const Albums = () => {
   const maxRecords = useSelector(getMaxRecords);
   const searchTerm = useSelector(getSearchTerm);
 
-  const totalPages = Math.ceil(maxRecords / limit);
-  const [searchText, setSearchText] = useState(searchTerm);
+  const totalPages = maxRecords > 0 ? Math.ceil(maxRecords / limit) : 1;
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
+    setSearchText("");
+    dispatch(setSearchTerm(""));
     dispatch(resetPage());
   }, [dispatch]);
 
@@ -23,10 +25,23 @@ const Albums = () => {
     dispatch(fetchAlbums(page, searchTerm));
   }, [dispatch, page, searchTerm]);
 
-  const handleSearch = debounce((value) => {
-    dispatch(setSearchTerm(value));
-    dispatch(setPage(1));
-  }, 500);
+  const handleSearch = useMemo(
+    () =>
+      debounce((value) => {
+        dispatch(setSearchTerm(value));
+        dispatch(resetPage());
+        // console.log("Search Term: ", value);
+        // dispatch(setPage(1));
+        // dispatch(fetchAlbums(1, value, page, searchTerm));
+      }, 1500),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    return () => {
+      handleSearch.cancel();
+    };
+  }, [handleSearch]);
 
   const onSearchChange = (e) => {
     setSearchText(e.target.value);
@@ -81,23 +96,25 @@ const Albums = () => {
       <AlbumList albums={albums} />
 
       {/* Pagination Controls */}
-      <div className="mt-4 flex justify-center gap-4">
-        <button
-          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-          onClick={() => dispatch(setPage(page - 1))}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <span className="mt-2">Page {page} of {totalPages}</span>
-        <button
-          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-          onClick={() => dispatch(setPage(page + 1))}
-          disabled={page >= totalPages}
-        >
-          Next
-        </button>
-      </div>
+      {maxRecords > 0 && (
+        <div className="mt-4 flex justify-center gap-4">
+          <button
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            onClick={() => dispatch(setPage(page - 1))}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+          <span className="mt-2">Page {page} of {totalPages}</span>
+          <button
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            onClick={() => dispatch(setPage(page + 1))}
+            disabled={page >= totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
