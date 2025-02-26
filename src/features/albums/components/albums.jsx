@@ -48,12 +48,7 @@ const Albums = () => {
     .matches(/^[a-zA-Z0-9\s]+$/, "Only letters and numbers are allowed");
 
   const handleSearch = useMemo(() => {
-    // return debounce((value) => {
-    //   if (value === "") {
-    //     dispatch(setSearchTerm(""));
-    //     dispatch(resetPage());
-    //     return;
-    //   }
+
     return debounce((value) => {
       searchSchema
         .validate(value)
