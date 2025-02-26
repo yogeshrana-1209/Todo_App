@@ -16,7 +16,7 @@ AlbumList.propTypes = {
   albums: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      thumbnailUrl: PropTypes.string.isRequired,
+      // thumbnailUrl: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
     })
   ).isRequired,

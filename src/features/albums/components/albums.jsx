@@ -1,5 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAlbums, setPage, setSearchTerm, getCurrentPage, getAlbumList, getMaxRecords, getLimit, resetPage, getSearchTerm } from "../store/AlbumSlice";
+import {
+  fetchAlbums,
+  setPage,
+  setSearchTerm,
+  getCurrentPage,
+  getAlbumList,
+  getMaxRecords,
+  getLimit,
+  resetPage,
+  getSearchTerm,
+  getLoading,
+} from "../store/AlbumSlice";
 import AlbumList from "./albumList";
 import { useEffect, useState, useMemo } from "react";
 import debounce from "lodash.debounce";
@@ -12,6 +23,7 @@ const Albums = () => {
   const limit = useSelector(getLimit);
   const maxRecords = useSelector(getMaxRecords);
   const searchTerm = useSelector(getSearchTerm);
+  const loading = useSelector(getLoading);
 
   const totalPages = maxRecords > 0 ? Math.ceil(maxRecords / limit) : 1;
   const [searchText, setSearchText] = useState(searchTerm);
@@ -130,7 +142,7 @@ const Albums = () => {
           value={searchText}
           onChange={onSearchChange}
           onBlur={onSearchBlur}
-          placeholder="Search Albums"
+          placeholder="Search by Title"
           className="px-4 py-2 border border-gray-400 rounded-lg w-80 focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
@@ -143,8 +155,12 @@ const Albums = () => {
         </p>
       )}
 
+      {loading && (
+        <p className="text-center text-gray-600 mb-4">Loading albums...</p>
+      )}
+
       {/* Show Search Results Message */}
-      {!error && searchTerm && maxRecords > 0 && (
+      {!error && searchTerm && maxRecords > 0 && !loading && (
         <p className="text-center text-gray-600 mb-4">
           {albums.length === 0
             ? `No records found for '${searchTerm}'`
@@ -154,17 +170,19 @@ const Albums = () => {
       )}
 
       {/* Show No Records Message */}
-      {!error && searchTerm && maxRecords === 0 && (
+      {!error && searchTerm && maxRecords === 0 && !loading && (
         <p className="text-center text-gray-500">
           No records found for {searchTerm}
         </p>
       )}
 
       {/* Display Album List */}
-      {albums.length > 0 ? (
+      {!loading && albums.length > 0 ? (
         <AlbumList albums={albums} />
       ) : (
-        !error && !searchTerm && <p className="text-center text-gray-500">No albums found.</p>
+        !error &&
+        !searchTerm &&
+        !loading && <p className="text-center text-gray-500">No albums found.</p>
       )}
 
       {/* Pagination Controls */}
@@ -173,7 +191,7 @@ const Albums = () => {
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
             onClick={() => dispatch(setPage(page - 1))}
-            disabled={page === 1}
+            disabled={page === 1 || loading}
           >
             Previous
           </button>
@@ -181,7 +199,7 @@ const Albums = () => {
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
             onClick={() => dispatch(setPage(page + 1))}
-            disabled={page >= totalPages}
+            disabled={page >= totalPages || loading}
           >
             Next
           </button>

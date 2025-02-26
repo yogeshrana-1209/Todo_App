@@ -7,12 +7,14 @@ const initialState = {
   limit: 5,
   maxRecords: 100,
   searchTerm: "",
+  loading: false,
 };
 
 export const fetchAlbums =
   (page, searchTerm = "") =>
   async (dispatch, getState) => {
     try {
+      dispatch(setLoading(true)); // Start Loading
       const { limit } = getState().album;
       const searchQuery = searchTerm ? `&q=${searchTerm}` : "";
 
@@ -31,6 +33,8 @@ export const fetchAlbums =
       }
     } catch (error) {
       console.error("Something went wrong in API", error);
+    } finally {
+      dispatch(setLoading(false)); // Stop Loading
     }
   };
 
@@ -39,6 +43,7 @@ export const getCurrentPage = (state) => state.album.page;
 export const getLimit = (state) => state.album.limit;
 export const getMaxRecords = (state) => state.album.maxRecords;
 export const getSearchTerm = (state) => state.album.searchTerm;
+export const getLoading = (state) => state.album.loading;
 
 const albumSlice = createSlice({
   name: "album",
@@ -67,6 +72,9 @@ const albumSlice = createSlice({
       state.page = 1;
       state.maxRecords = 0;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -77,6 +85,7 @@ export const {
   setMaxRecords,
   resetPage,
   setSearchTerm,
+  setLoading,
 } = albumSlice.actions;
 
 export default albumSlice.reducer;

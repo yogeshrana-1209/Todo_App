@@ -13,7 +13,7 @@ const AlbumCard = ({ album }) => {
 // **PropTypes Validation**
 AlbumCard.propTypes = {
   album: PropTypes.shape({
-    thumbnailUrl: PropTypes.string.isRequired,
+    // thumbnailUrl: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
   }).isRequired,
