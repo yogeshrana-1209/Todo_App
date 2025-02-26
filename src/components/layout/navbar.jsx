@@ -138,7 +138,7 @@ export default function Navbar() {
       </nav>
 
       {/* Fix overlapping by adding padding */}
-      <div className="pt-16"></div>
+      {/* <div className="pt-16"></div> */}
     </>
   );
 }

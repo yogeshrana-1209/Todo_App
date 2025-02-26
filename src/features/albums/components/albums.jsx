@@ -131,7 +131,7 @@ const Albums = () => {
       <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">Albums List</h1>
 
       {/* Search Bar  */}
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4 pt-4">
         <input
           type="text"
           value={searchText}

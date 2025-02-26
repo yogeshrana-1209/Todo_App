@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getStatus, login } from "./features/auth/store/AuthSlice";
 // import AlbumCard from "./features/albums/components/albumCard";
 import Albums from "./features/albums/components/albums";
+import Layout from "./components/layout/layout";
 
 function App() {
   const isLogin = useSelector(getStatus);
@@ -50,32 +51,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/todo-list"
-            element={
-              <ProtectedRoute>
-                <TodoList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/todo-form"
-            element={
-              <ProtectedRoute>
-                <TodoForm />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/album"
-            element={
-              <ProtectedRoute>
-                <Albums />
-              </ProtectedRoute>
-            }
-          />
+          {/* Protected Routes with Layout */}
+          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+            <Route path="/todo-list" element={<TodoList />} />
+            <Route path="/todo-form" element={<TodoForm />} />
+            <Route path="/album" element={<Albums />} />
+          </Route>
 
           {/* Catch-all route for undefined paths */}
           <Route path="*" element={<NotFound />} />

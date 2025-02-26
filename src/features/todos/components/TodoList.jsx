@@ -14,7 +14,6 @@ import TodoCard from "./TodoCard";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../../components/sharedComponent/ui/loadingSpinner";
 import { getStatus } from "../../auth/store/AuthSlice";
-import Navbar from "../../../components/layout/navbar";
 import Pagination from "../../../components/sharedComponent/ui/pagination";
 // import { getCurrentPage, getItemsPerPage } from "../../pagination/store/PaginationSlice";
 // import SearchBar from "../../../components/sharedComponent/ui/searchBar";
@@ -82,9 +81,7 @@ export default function TodoList() {
 
   return (
     <>
-      <Navbar />
-
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-4">
+      <div className="min-h-screen pt-[90px] bg-gradient-to-br from-blue-50 to-white py-4">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center m-2">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-5 inline-block border-2 border-blue-600 rounded-2xl bg-blue-50/50 px-8 py-2 shadow-md">
