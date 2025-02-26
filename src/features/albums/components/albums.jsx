@@ -28,12 +28,12 @@ const Albums = () => {
     dispatch(fetchAlbums(page, searchTerm));
   }, [dispatch, page, searchTerm]);
 
-  //Validation with Yup
+  //Validation Schema with Yup
   const searchSchema = Yup.string()
-    .trim()
     .required("Search field cannot be empty")
-    .matches(/^[a-zA-Z0-9\s]+$/, "Only letters and numbers are allowed")
-    .matches(/^(?!.*\s{2,}).*$/, "No consecutive spaces allowed");
+    .matches(/^(?!\s).*$/, "Search cannot start with space")
+    .matches(/^(?!.*\s{2,}).*$/, "No consecutive spaces allowed")
+    .matches(/^[a-zA-Z0-9\s]+$/, "Only letters and numbers are allowed");
 
   const handleSearch = useMemo(() => {
     return debounce((value) => {
@@ -62,6 +62,7 @@ const Albums = () => {
     };
   }, [handleSearch]);
 
+  // Handle Input Change 
   const onSearchChange = (e) => {
     const value = e.target.value;
     setSearchText(value);
@@ -119,30 +120,32 @@ const Albums = () => {
   // };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4 text-center">Albums List</h1>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">Albums List</h1>
 
       {/* Search Bar  */}
-      <div className="mb-4 flex justify-center">
+      <div className="flex justify-center mb-4">
         <input
           type="text"
           value={searchText}
           onChange={onSearchChange}
           onBlur={onSearchBlur}
           placeholder="Search Albums"
-          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="px-4 py-2 border border-gray-400 rounded-lg w-80 focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
       </div>
+
+      {/* //Error Message */}
       {error && (
-        <p className="text-red-600 text-md mb-3 sm:text-sm px-2 py-1 rounded-md max-w-xs sm:max-w-sm mx-auto text-center">
+        <p className="text-red-500 text-center mb-3 text-sm">
           {error}
         </p>
       )}
 
       {/* Show Search Results Message */}
       {!error && searchTerm && maxRecords > 0 && (
-        <p className="text-center mb-4 text-gray-600">
+        <p className="text-center text-gray-600 mb-4">
           {albums.length === 0
             ? `No records found for '${searchTerm}'`
             : `Total ${maxRecords} records found for '${searchTerm}'`
@@ -166,9 +169,9 @@ const Albums = () => {
 
       {/* Pagination Controls */}
       {maxRecords > 0 && albums.length > 0 && (
-        <div className="mt-4 flex justify-center gap-4">
+        <div className="flex justify-center items-center mt-6 space-x-4">
           <button
-            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
             onClick={() => dispatch(setPage(page - 1))}
             disabled={page === 1}
           >
@@ -176,7 +179,7 @@ const Albums = () => {
           </button>
           <span className="mt-2">Page {page} of {totalPages}</span>
           <button
-            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
             onClick={() => dispatch(setPage(page + 1))}
             disabled={page >= totalPages}
           >
