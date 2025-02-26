@@ -18,10 +18,11 @@ const Albums = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setSearchText("");
-    dispatch(setSearchTerm(""));
-    dispatch(resetPage());
-  }, [dispatch]);
+    if (!searchTerm) {
+      setSearchText("");
+      dispatch(resetPage());
+    }
+  }, [dispatch, searchTerm]);
 
   useEffect(() => {
     dispatch(fetchAlbums(page, searchTerm));
@@ -34,22 +35,26 @@ const Albums = () => {
     .matches(/^[a-zA-Z0-9\s]+$/, "Only letters and numbers are allowed")
     .matches(/^(?!.*\s{2,}).*$/, "No consecutive spaces allowed");
 
-  const handleSearch = useMemo(
-    () =>
-      debounce((value) => {
-        searchSchema
-          .validate(value)
-          .then(() => {
-            setError("");
-            dispatch(setSearchTerm(value));
-            dispatch(resetPage());
-          })
-          .catch((err) => {
-            setError(err.message);
-          });
-      }, 1000),
-    [dispatch]
-  );
+  const handleSearch = useMemo(() => {
+    return debounce((value) => {
+      if (value === "") {
+        dispatch(setSearchTerm(""));
+        dispatch(resetPage());
+        return;
+      }
+
+      searchSchema
+        .validate(value)
+        .then(() => {
+          setError("");
+          dispatch(setSearchTerm(value));
+          dispatch(resetPage());
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    }, 1000);
+  }, [dispatch]);
 
   useEffect(() => {
     return () => {
@@ -61,10 +66,11 @@ const Albums = () => {
     const value = e.target.value;
     setSearchText(value);
 
-    if (value === "") {
+    if (value.trim() === "") {
       setError("");
       dispatch(setSearchTerm(""));
       dispatch(resetPage());
+      handleSearch.cancel();
       return;
     }
 
@@ -75,7 +81,7 @@ const Albums = () => {
       .catch((err) => setError(err.message));
 
     handleSearch(value.trim());
-
+    // console.log(value);
   };
 
   const onSearchBlur = () => {
