@@ -44,17 +44,17 @@ const Albums = () => {
   const searchSchema = Yup.string()
     .required("Search field cannot be empty")
     .matches(/^(?!\s).*$/, "Search cannot start with space")
-    .matches(/^(?!.*\s{2,}).*$/, "No consecutive spaces allowed")
+    .matches(/^(?!.*\s{1,}).*$/, "No consecutive spaces allowed")
     .matches(/^[a-zA-Z0-9\s]+$/, "Only letters and numbers are allowed");
 
   const handleSearch = useMemo(() => {
+    // return debounce((value) => {
+    //   if (value === "") {
+    //     dispatch(setSearchTerm(""));
+    //     dispatch(resetPage());
+    //     return;
+    //   }
     return debounce((value) => {
-      if (value === "") {
-        dispatch(setSearchTerm(""));
-        dispatch(resetPage());
-        return;
-      }
-
       searchSchema
         .validate(value)
         .then(() => {
@@ -79,6 +79,12 @@ const Albums = () => {
     const value = e.target.value;
     setSearchText(value);
 
+    //Show error immediately when typing
+    searchSchema
+      .validate(value)
+      .then(() => setError(""))
+      .catch((err) => setError(err.message));
+
     if (value.trim() === "") {
       setError("");
       dispatch(setSearchTerm(""));
@@ -86,12 +92,6 @@ const Albums = () => {
       handleSearch.cancel();
       return;
     }
-
-    //Show error immediately when typing
-    searchSchema
-      .validate(value)
-      .then(() => setError(""))
-      .catch((err) => setError(err.message));
 
     handleSearch(value.trim());
     // console.log(value);
@@ -178,7 +178,7 @@ const Albums = () => {
 
       {/* Display Album List */}
       {!loading && albums.length > 0 ? (
-        <AlbumList albums={albums} />
+        <AlbumList albums={albums} searchTerm={searchTerm} />
       ) : (
         !error &&
         !searchTerm &&
