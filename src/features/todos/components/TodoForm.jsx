@@ -141,7 +141,7 @@ export default function TodoForm() {
   return (
     <>
       <div className="flex justify-center text-left mt-[40px] p-5 items-center bg-gradient-to-r from-white-500 via-white-500 to-white-500">
-        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+        <div className="bg-white p-8 mt-8 rounded-xl shadow-lg w-full max-w-lg">
 
           {/* Back Button */}
           <button

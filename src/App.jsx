@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import Login from "./features/auth/components/Login";
 import Signup from "./features/auth/components/Signup";
 import TodoForm from "./features/Todos/components/TodoForm";
-import TodoList from "./features/Todos/components/TodoList";
+import TodoList from "./features/todos/components/TodoList";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/notFound";
 import { useDispatch, useSelector } from "react-redux";

@@ -10,7 +10,7 @@ const initialState = {
   selectedTodo: null,
   loading: false, // Add loading state
   currentPage: 1,
-  itemsPerPage: 4,
+  itemsPerPage: 8,
 };
 
 export const fetchTodos = (page, itemsPerPage) => async (dispatch) => {

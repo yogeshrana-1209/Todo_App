@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getStatus, logout } from "../../features/auth/store/AuthSlice";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons for menu
 import todo_logo from "/assets/images/todo-app-icon.png"; // Import your logo image
 
@@ -9,15 +9,27 @@ export default function Navbar() {
   const isLoggedIn = useSelector(getStatus);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
+
+  //Change the button text and link based on the current page
+  const isAlbumPage = location.pathname === "/album";
+  const buttonText = isAlbumPage ? "Go to Todos" : "Go to Albums";
+  const buttonLink = isAlbumPage ? "/todo-list" : "album";
 
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("user");
     navigate("/login");
+    setMenuOpen(false);
   };
+
+  //Close menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <>
@@ -54,18 +66,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             {isLoggedIn ? (
               <>
-                {/* <button
-                  onClick={() => navigate("/todo-form")}
-                  className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
-                >
-                  Go to TodoForm
-                </button> */}
 
                 <button
-                  onClick={() => navigate("/album")}
+                  onClick={() => navigate(buttonLink)}
                   className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
                 >
-                  Album
+                  {buttonText}
                 </button>
 
                 <button
@@ -93,12 +99,12 @@ export default function Navbar() {
 
               <button
                 onClick={() => {
-                  navigate("/album");
+                  navigate(buttonLink);
                   setMenuOpen(false);
                 }}
                 className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
               >
-                Album
+                {buttonText}
               </button>
 
               <button
