@@ -10,7 +10,7 @@ import {
   resetPage,
   getSearchTerm,
   getLoading,
-} from "../store/AlbumSlice";
+} from "../store/albumSlice";
 import AlbumList from "./albumList";
 import { useEffect, useState, useMemo } from "react";
 import debounce from "lodash.debounce";

@@ -17,6 +17,7 @@ import { getStatus, login } from "./features/auth/store/AuthSlice";
 // import AlbumCard from "./features/albums/components/albumCard";
 import Albums from "./features/albums/components/albums";
 import Layout from "./components/layout/layout";
+import FileUploadPage from "./features/files/components/fileUploadPage";
 
 function App() {
   const isLogin = useSelector(getStatus);
@@ -56,6 +57,7 @@ function App() {
             <Route path="/todo-list" element={<TodoList />} />
             <Route path="/todo-form" element={<TodoForm />} />
             <Route path="/album" element={<Albums />} />
+            <Route path="/uploadfile" element={<FileUploadPage />} />
           </Route>
 
           {/* Catch-all route for undefined paths */}

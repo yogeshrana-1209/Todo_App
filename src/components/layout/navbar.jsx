@@ -15,6 +15,7 @@ export default function Navbar() {
 
   //Change the button text and link based on the current page
   const isAlbumPage = location.pathname === "/album";
+  const isUploadFilePage = location.pathname === "/uploadfile";
   const buttonText = isAlbumPage ? "Go to Todos" : "Go to Albums";
   const buttonLink = isAlbumPage ? "/todo-list" : "album";
 
@@ -74,6 +75,22 @@ export default function Navbar() {
                   {buttonText}
                 </button>
 
+                {!isUploadFilePage ? (
+                  <button
+                    onClick={() => navigate("/uploadfile")}
+                    className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+                  >
+                    Upload File
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => navigate("/todo-list")}
+                    className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+                  >
+                    Go to TodoList
+                  </button>
+                )}
+
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 transition"
@@ -112,10 +129,33 @@ export default function Navbar() {
                   navigate("/todo-form");
                   setMenuOpen(false);
                 }}
-                className="bg-blue-900 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+                className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
               >
                 Go to Form
               </button>
+
+              {!isUploadFilePage ? (
+                <button
+                  onClick={() => {
+                    navigate("/uploadfile");
+                    setMenuOpen(false);
+                  }}
+                  className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+                >
+                  Upload File
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    navigate("/todo-list");
+                    setMenuOpen(false);
+                  }}
+                  className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-800 transition"
+                >
+                  Go to TodoList
+                </button>
+              )}
+
 
               {isLoggedIn ? (
                 <button
