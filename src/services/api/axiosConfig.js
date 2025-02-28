@@ -22,9 +22,6 @@ const axiosInstanceAlbum = axios.create({
 
 const axiosInstanceFile = axios.create({
   baseURL: import.meta.env.VITE_FILE_API_URL || "http://localhost:4000",
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 // //GET request function
 // export const getRequest = (url) => {
@@ -47,7 +44,12 @@ const axiosInstanceFile = axios.create({
 // }
 
 const apiFile = {
-  post: async (url, file) => await axiosInstanceFile.post(url, file),
+  post: async (url, file) => {
+    const response = await axiosInstanceFile.post(url, file, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
 };
 
 const apiAlbum = {
