@@ -11,11 +11,14 @@ const initialState = {
   error: null,
 };
 
-export const uploadFile = (fileData) => async (dispatch) => {
+export const uploadFile = (file) => async (dispatch) => {
   dispatch(uploadFileRequest());
 
+  const formData = new FormData();
+  formData.append("file", file);
+
   try {
-    const response = await apiFile.post("/upload", fileData);
+    const response = await apiFile.post("/upload", formData);
     dispatch(uploadFileSuccess(response.data));
     SuccessNotify("File uploaded successfully");
   } catch (error) {
@@ -25,21 +28,17 @@ export const uploadFile = (fileData) => async (dispatch) => {
   }
 };
 
-//Selectors
-export const getFiles = (state) => state.files.files;
-export const getError = (state) => state.files.error;
-export const getStatus = (state) => state.files.status;
-
 const fileSlice = createSlice({
   name: "files",
   initialState,
   reducers: {
     uploadFileRequest: (state) => {
       state.status = "loading";
+      state.error = null;
     },
     uploadFileSuccess: (state, action) => {
       state.status = "succeeded";
-      state.files = [...state.files, action.payload];
+      state.files.push(action.payload);
     },
     uploadFileFailure: (state, action) => {
       state.status = "failed";
@@ -48,7 +47,8 @@ const fileSlice = createSlice({
   },
 });
 
-export const { uploadFileRequest, uploadFileSuccess, uploadFileFailure } =
-  fileSlice.actions;
+export const getStatus = (state) => state.files.status;
+export const getError = (state) => state.files.error;
 
+export const { uploadFileRequest, uploadFileSuccess, uploadFileFailure } = fileSlice.actions;
 export default fileSlice.reducer;

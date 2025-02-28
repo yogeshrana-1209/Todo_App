@@ -1,63 +1,119 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import * as Yup from "yup";
+import { PhotoIcon } from "@heroicons/react/24/outline";
+import { useSelector, useDispatch } from "react-redux";
+import { getStatus, getError, uploadFile } from "../../../features/files/store/fileSlice";
 
 const fileSchema = Yup.object().shape({
     file: Yup.mixed()
         .required("File is required")
-        .test("fileSize", "File size too large (Max: 5MB)", (value) =>
-            value && value.size <= 5 * 1024 * 1024
+        .test("fileSize", "File size too large (Max: 200KB)", (value) =>
+            value && value.size <= 200 * 1024
         )
         .test("fileType", "Unsupported file format", (value) =>
-            value && ["image/png", "image/jpeg"].includes(value.type)
+            value && ["image/png", "image/jpeg", "image/jpg"].includes(value.type)
         ),
 });
 
-const FileUpload = ({ onSubmit, status = "idle", error = null }) => {
-    const [file, setFile] = useState(null);
+const FileUpload = () => {
+    const dispatch = useDispatch();
+    const status = useSelector(getStatus);
+    const error = useSelector(getError);
+
     const [fileName, setFileName] = useState("");
+    const [selectedFile, setSelectedFile] = useState(null);
     const [validationError, setValidationError] = useState("");
+    const [isDragging, setIsDragging] = useState(false);
+    const fileInputRef = useRef(null);
 
-    const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0];
-
-        if (selectedFile) {
+    const handleFileChange = (file) => {
+        if (file) {
             fileSchema
-                .validate({ file: selectedFile })
+                .validate({ file })
                 .then(() => {
-                    setFile(selectedFile);
-                    setFileName(selectedFile.name);
+                    setFileName(file.name);
                     setValidationError("");
+                    setSelectedFile(file);
                 })
-                .catch((err) => setValidationError(err.message));
+                .catch((err) => {
+                    setValidationError(err.message);
+                    setFileName("");
+                    setSelectedFile(null);
+                });
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const droppedFile = e.dataTransfer.files[0];
+        if (droppedFile) {
+            handleFileChange(droppedFile);
         }
     };
 
     const submitHandler = (e) => {
         e.preventDefault();
-        if (!file) {
+        if (!selectedFile) {
             setValidationError("No file selected");
             return;
         }
-        const formData = new FormData();
-        formData.append("file", file);
-        onSubmit(formData);
-        setFile(null);
-        setFileName("");
+        dispatch(uploadFile(selectedFile));
     };
+
+    useEffect(() => {
+        if (status === "succeeded") {
+            setFileName("");
+            setSelectedFile(null);
+            setValidationError("");
+        }
+    }, [status]);
 
     return (
         <form onSubmit={submitHandler} className="space-y-4">
-            <div>
-                <label className="block text-gray-700 font-medium">Upload File</label>
-                <input
-                    type="file"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    onChange={handleFileChange}
-                />
-                {validationError && <p className="text-red-500 text-sm mt-1">{validationError}</p>}
-                {fileName && <p className="text-green-600 text-sm mt-1">Selected File: {fileName}</p>}
+            <div
+                className={`mt-2 flex justify-center rounded-lg border border-dashed px-6 py-10 cursor-pointer transition ${isDragging ? "border-blue-500 bg-blue-100" : "border-gray-900/25"
+                    }`}
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+            >
+                <div className="text-center">
+                    <PhotoIcon aria-hidden="true" className="mx-auto size-12 text-gray-300" />
+                    <div className="mt-4 flex text-sm text-gray-600">
+                        <label
+                            htmlFor="file-upload"
+                            className="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 focus:outline-none hover:text-blue-500"
+                        >
+                            <span>Upload a file</span>
+                            <input
+                                id="file-upload"
+                                name="file-upload"
+                                type="file"
+                                className="sr-only"
+                                ref={fileInputRef}
+                                onChange={(e) => handleFileChange(e.target.files[0])}
+                            />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                    </div>
+                    <p className="text-xs text-gray-600">PNG, JPG, or JPEG up to 200KB</p>
+                    {fileName && <p className="text-green-600 text-sm mt-1">Selected File: {fileName}</p>}
+                </div>
             </div>
+
+            {validationError && <p className="text-red-500 text-sm">{validationError}</p>}
 
             <button
                 type="submit"
@@ -67,19 +123,11 @@ const FileUpload = ({ onSubmit, status = "idle", error = null }) => {
                 {status === "loading" ? "Uploading..." : "Upload"}
             </button>
 
-            {status === "loading" && (
-                <p className="text-center text-blue-500">Uploading, please wait...</p>
-            )}
+            {status === "loading" && <p className="text-center text-blue-500">Uploading, please wait...</p>}
 
             {error && <p className="text-red-500 mt-2 text-center font-medium">Error: {error}</p>}
         </form>
     );
-};
-
-FileUpload.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    status: PropTypes.oneOf(["idle", "loading", "succeeded", "failed"]),
-    error: PropTypes.string,
 };
 
 export default FileUpload;

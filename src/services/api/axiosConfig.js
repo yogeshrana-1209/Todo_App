@@ -45,9 +45,7 @@ const axiosInstanceFile = axios.create({
 
 const apiFile = {
   post: async (url, file) => {
-    const response = await axiosInstanceFile.post(url, file, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await axiosInstanceFile.post(url, file);
     return response.data;
   },
 };
