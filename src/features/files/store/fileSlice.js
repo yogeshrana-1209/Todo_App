@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiFile } from "../../../services/api/axiosConfig";
+import {
+  SuccessNotify,
+  DangerNotify,
+} from "../../../components/sharedComponent/ui/notification";
 
 const initialState = {
   files: [],
@@ -13,8 +17,11 @@ export const uploadFile = (fileData) => async (dispatch) => {
   try {
     const response = await apiFile.post("/upload", fileData);
     dispatch(uploadFileSuccess(response.data));
+    SuccessNotify("File uploaded successfully");
   } catch (error) {
-    dispatch(uploadFileFailure(error.response?.data || "Upload failed"));
+    const errorMessage = error.response?.data || "Upload failed";
+    dispatch(uploadFileFailure(errorMessage));
+    DangerNotify(errorMessage);
   }
 };
 
