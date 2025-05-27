@@ -21,11 +21,10 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("user");
     navigate("/login");
     setMenuOpen(false);
   };
+
 
   //Close menu on route change
   useEffect(() => {
